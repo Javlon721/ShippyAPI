@@ -1,0 +1,3 @@
+class ShipNameNotFound(Exception):
+
+    pass
