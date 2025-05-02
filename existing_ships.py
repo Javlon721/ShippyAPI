@@ -22,4 +22,4 @@ def get_ship_by_name(ship_name):
         case "Bismarck":
             return Ship("Bismarck", "Линкор", "Германия", 7000, 20, 50000, 1.3)
         case _:
-            raise ShipNameNotFound('ship name does not exist')
+            raise ShipNameNotFound(f'Ship name does not exist: {ship_name}')
