@@ -1,4 +1,3 @@
-
 def get_row_format():
     """
     Функция расчитана для построения таблицы для экземпляров класса Ship.
@@ -43,9 +42,32 @@ class Ship:
         self._ship_type = ship_type
         self._nation = nation
         self._damage = damage
-        self._atack_range = atack_range
+        self._attack_range = atack_range
         self._hp = hp
         self._velocity = velocity
+        self._pos = 0
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def pos(self):
+        return round(self._pos, 2)
+
+    @property
+    def attack_range(self):
+        return self._attack_range
+    
+    @property
+    def velocity(self):
+        return self._velocity
+
+    def change_pos(self, direction=1):
+        self._pos += self._velocity * direction
+
+    def set_pos(self, val=0):
+        self._pos = val
 
     # * Я хотел использовать cache decorator, но потом передумал.
     # * Буду рад если вы дадите на счет этого коментарий, валидно ли его использовать для этой функциональности.
@@ -62,7 +84,7 @@ class Ship:
 
         return Ship._format_template.format(
             self._name, self._ship_type, self._nation,
-            str(self._damage), str(self._atack_range),
+            str(self._damage), str(self._attack_range),
             str(self._hp), str(self._velocity)
         )
 
@@ -81,3 +103,11 @@ class Ship:
         print(Ship._formated_titles)
         for ship in ships:
             print(ship._get_row)
+
+
+# def main():
+#     pass
+
+
+# if __name__ == "main":
+#     main()
