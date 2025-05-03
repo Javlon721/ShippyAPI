@@ -33,12 +33,17 @@ from game_errors import ShipNameNotFound
 ship_1 = get_ship_by_name('Hipper')
 ship_2 = get_ship_by_name('Belfast')
 ships_direction = input("Enter ships direction (0, 1, 2 or 3): ")
-distance_between_ships = int(input("Enter distance between ships (km): "))
+# distance_between_ships = int(input("Enter distance between ships (km): "))
 
-rand_pos1, rand_pos2 = get_random_positions(distance_between_ships) 
-ship_1.set_pos(rand_pos1)
-ship_2.set_pos(rand_pos2)
+# rand_pos1, rand_pos2 = get_random_positions(distance_between_ships) 
+# ship_1.set_pos(rand_pos1)
+# ship_2.set_pos(rand_pos2)
 
+ship_1.set_pos(9)
+ship_2.set_pos(13)
+print('-' * 30)
+Ship.print_ships(ship_1, ship_2)
+print('-' * 30)
 #* Нужно поменять направление погони относительно где стоит ship_2.
 #* Например если ship_2 догоняет ship_1 и если позиция ship_2 правее чем ship_1 
 #* то их позиции уменьшаются (<- ship_1 <- ship_2) и наоборот (ship_2 -> ship_1 ->)
@@ -51,3 +56,11 @@ if ship_2.pos < ship_1.pos:
     calculate_moves(ship_2, ship_1, ships_direction)
 else:
     calculate_moves(ship_1, ship_2, ships_direction)
+print('-' * 30)
+Ship.print_ships(ship_1, ship_2)
+# #* Testing damage
+# while ship_2.can_receive_damage() and ship_1.can_receive_damage():
+#     print('-' * 30)
+#     ship_1.attack(ship_2)
+#     print('-' * 30)
+#     ship_2.attack(ship_1)

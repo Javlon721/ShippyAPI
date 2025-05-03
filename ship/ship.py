@@ -5,7 +5,7 @@ def get_row_format():
     Функция возвращает кортеж, где:
         Первое значение - строка шаблон для последующего использования в форматировании
         Второе значение - строка отформатированных названий колонок
-    
+
     Для использования метода template.format используйте последовательность ключей словаря
     cols - ("Название", "Тип", "Нация", "Урон", "Дистанция атаки(км)", "Очки прочности", "Скорость (км/ход)", "Местонахождение (по координате х)")
     """
@@ -71,6 +71,10 @@ class Ship:
     def hp(self):
         return self._hp
 
+    @hp.setter
+    def hp(self, val):
+        self._hp = val
+
     @property
     def pos(self):
         return round(self._pos, 2)
@@ -93,10 +97,32 @@ class Ship:
         return abs(self.pos - ship.pos)
 
     def can_attack(self, ship):
-        return self.get_distance_between(ship) <= self.attack_range
+        return self.get_distance_between(ship) <= self.attack_range and self.is_alive()
+
+    def attack(self, ship):
+        print('-' * 30)
+        print(f'{self.name} at {self.pos} while {ship.name} at {ship.pos}. Distence between ships is {self.get_distance_between(ship)}')
+        print(
+            f'{self.name} is attacking {ship.name}. {ship.name} healthpoint is {ship.hp}')
+        if not self.can_attack(ship):
+            print(f'{ship.name} is too far (distance is {self.get_distance_between(ship)} when expecting {self.attack_range}) or {self.name} was destroyed (current healthpoint is {self.hp})')
+        else:
+            ship.receive_damage(self.damage)
+            print(
+                f'{self.name} has {self.damage} damage and hit {ship.name}. {ship.name} healthpoint is {ship.hp}')
+
+    def is_alive(self):
+        return self.hp > 0
+
+    def receive_damage(self, damage):
+        if not self.is_alive():
+            print(f'{self.name} has already destroyed!')
+        else:
+            self.hp = max(0, self.hp - damage)
 
     # * Я хотел использовать cache decorator, но потом передумал.
     # * Буду рад если вы дадите на счет этого коментарий, валидно ли его использовать для этой функциональности.
+
     def __str__(self):
         return Ship._formated_titles + "\n" + self._get_row
 
@@ -131,9 +157,10 @@ class Ship:
             print(ship._get_row)
 
 
-# def main():
-#     pass
+def main():
+    ship_1 = get_ship_by_name('Hipper')
+    ship_2 = get_ship_by_name('Belfast')
 
 
-# if __name__ == "main":
-#     main()
+if __name__ == "main":
+    main()
