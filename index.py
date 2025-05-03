@@ -1,7 +1,6 @@
 from existing_ships import get_ship_by_name
-from ship import Ship, calculate_moves
+from ship import Ship, calculate_moves, get_random_positions
 from game_errors import ShipNameNotFound
-from random import randint, shuffle
 
 
 # while True:
@@ -36,22 +35,22 @@ ship_2 = get_ship_by_name('Belfast')
 ships_direction = input("Enter ships direction (0, 1, 2 or 3): ")
 distance_between_ships = int(input("Enter distance between ships (km): "))
 
-pos1 = randint(-100, 100)
-pos2 = pos1 + distance_between_ships
-shuffle_pos = [pos1, pos2]
-shuffle(shuffle_pos)
-ship_1.set_pos(shuffle_pos[0])
-ship_2.set_pos(shuffle_pos[1])
+rand_pos1, rand_pos2 = get_random_positions(distance_between_ships) 
+ship_1.set_pos(rand_pos1)
+ship_2.set_pos(rand_pos2)
 
+#* Нужно поменять направление погони относительно где стоит ship_2.
+#* Например если ship_2 догоняет ship_1 и если позиция ship_2 правее чем ship_1 
+#* то их позиции уменьшаются (<- ship_1 <- ship_2) и наоборот (ship_2 -> ship_1 ->)
 if ship_2.pos < ship_1.pos:
     direction_map = {
         '2': '3',
         '3': '2'
     }
     ships_direction = direction_map.get(ships_direction, ships_direction)
-
     calculate_moves(ship_2, ship_1, ships_direction)
 else:
     calculate_moves(ship_1, ship_2, ships_direction)
 
+print('-' * 30)
 Ship.print_ships(ship_1, ship_2)
