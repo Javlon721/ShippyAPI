@@ -2,7 +2,7 @@ def create_attack_checker(ship1, ship2, max_attack_distance):
     """
     Я замкнул параметры (ship1, ship2 и max_attack_distance), чтобы в функции calculate_moves 
     при неоднократном вызове функции can_any_attack не дублировать передачу параметров.
-    Буду рад если вы дадите коментарий такого подхода!
+    Буду рад если вы дадите коментарий к такому подходу!
     """
     def can_any_attack():
         return ship1.get_distance_between(ship2) <= max_attack_distance
