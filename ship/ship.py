@@ -5,6 +5,9 @@ def get_row_format():
     Функция возвращает кортеж, где:
         Первое значение - строка шаблон для последующего использования в форматировании
         Второе значение - строка отформатированных названий колонок
+    
+    Для использования метода template.format используйте последовательность ключей словаря
+    cols - ("Название", "Тип", "Нация", "Урон", "Дистанция атаки(км)", "Очки прочности", "Скорость (км/ход)", "Местонахождение (по координате х)")
     """
 
     cols = {
@@ -14,7 +17,8 @@ def get_row_format():
         "Урон": 8,
         "Дистанция атаки(км)": 22,
         "Очки прочности": 18,
-        "Скорость (км/ход)": 20
+        "Скорость (км/ход)": 20,
+        "Местонахождение (по координате х)": 35,
     }
     template = "".join(["{:<" + str(cols[key]) + "}" for key in cols])
     return (template, template.format(*cols.keys()))
@@ -52,13 +56,29 @@ class Ship:
         return self._name
 
     @property
+    def ship_type(self):
+        return self._ship_type
+
+    @property
+    def nation(self):
+        return self._nation
+
+    @property
+    def damage(self):
+        return self._damage
+
+    @property
+    def hp(self):
+        return self._hp
+
+    @property
     def pos(self):
         return round(self._pos, 2)
 
     @property
     def attack_range(self):
         return self._attack_range
-    
+
     @property
     def velocity(self):
         return self._velocity
@@ -68,6 +88,12 @@ class Ship:
 
     def set_pos(self, val=0):
         self._pos = val
+
+    def get_distance_between(self, ship):
+        return abs(self.pos - ship.pos)
+
+    def can_attack(self, ship):
+        return self.get_distance_between(ship) <= self.attack_range
 
     # * Я хотел использовать cache decorator, но потом передумал.
     # * Буду рад если вы дадите на счет этого коментарий, валидно ли его использовать для этой функциональности.
@@ -83,13 +109,13 @@ class Ship:
         """
 
         return Ship._format_template.format(
-            self._name, self._ship_type, self._nation,
-            str(self._damage), str(self._attack_range),
-            str(self._hp), str(self._velocity)
+            self.name, self.ship_type, self.nation,
+            str(self.damage), str(self.attack_range),
+            str(self.hp), str(self.velocity), str(self.pos)
         )
 
     @staticmethod
-    def print_ships(ships):
+    def print_ships(*ships):
         """
         Выводит список кораблей в отформатированном виде.
 
@@ -97,7 +123,7 @@ class Ship:
         и getter экземпляра _get_row для получения строк с данными о каждом корабле.
 
         Параметры:
-            ships (list): Список объектов типа Ship.
+            ships (*ships): Неограниченное количество объектов Ship, переданных как аргументы
         """
 
         print(Ship._formated_titles)
