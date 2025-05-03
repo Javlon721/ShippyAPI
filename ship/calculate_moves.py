@@ -1,27 +1,45 @@
+def create_attack_checker(ship1, ship2, max_attack_distance):
+    """
+    Я замкнул параметры (ship1, ship2 и max_attack_distance), чтобы в функции calculate_moves 
+    при неоднократном вызове функции can_any_attack не дублировать передачу параметров.
+    Буду рад если вы дадите коментарий такого подхода!
+    """
+    def can_any_attack():
+        return ship1.get_distance_between(ship2) <= max_attack_distance
+    return can_any_attack
+
+
 def calculate_moves(ship1, ship2, ships_direction):
-    max_distance_between_ships = max(ship1.attack_range, ship2.attack_range)
+    max_attack_distance = max(ship1.attack_range, ship2.attack_range)
+    can_any_attack = create_attack_checker(ship1, ship2, max_attack_distance)
     match ships_direction:
         case '0':
-            while ship2.pos - ship1.pos > 0 or ship1.pos - ship2.pos <= max_distance_between_ships:
+            """
+            Пока ship2 приближается к ship1 или один из них или оба могут атаковать (ship_1 -> <- ship_2)
+            """
+            while ship2.pos > ship1.pos or can_any_attack():
                 ship1.change_pos()
                 ship2.change_pos(-1)
         case '1':
-            while ship2.pos - ship1.pos <= max_distance_between_ships:
+            """
+            Пока один из них или оба могут атаковать (<- ship_1  ship_2 ->)
+            """
+            while can_any_attack():
                 ship1.change_pos(-1)
                 ship2.change_pos()
         case '2':
-            can_ship1_chase = ship1.velocity > ship2.velocity or ship2.pos - \
-                ship1.pos <= max_distance_between_ships
-            if can_ship1_chase:
-                while abs(ship1.pos - ship2.pos) <= max_distance_between_ships or (ship1.pos < ship2.pos and ship1.velocity > ship2.velocity):
-                    ship1.change_pos()
-                    ship2.change_pos()
+            """
+            Пока ship1 догоняет ship2 или расстояние между ними такое, что один из них или оба могут атаковать
+            (ship_1 -> ship_2 ->)
+            """
+            while (ship2.pos > ship1.pos and ship1.velocity > ship2.velocity) or can_any_attack():
+                ship1.change_pos()
+                ship2.change_pos()
         case '3':
-            can_ship2_chase = ship2.velocity > ship1.velocity or abs(
-                ship2.pos - ship1.pos) <= max_distance_between_ships
-            if can_ship2_chase:
-                while (ship2.pos > ship1.pos and ship2.velocity > ship1.velocity) or abs(ship2.pos - ship1.pos) <= max_distance_between_ships:
-                    ship1.change_pos(-1)
-                    ship2.change_pos(-1)
-
-
+            """
+            Пока ship2 догоняет ship1 или расстояние между ними такое, что один из них или оба могут атаковать
+            (<- ship_1 <- ship_2 )
+            """
+            while (ship2.pos > ship1.pos and ship2.velocity > ship1.velocity) or can_any_attack():
+                ship1.change_pos(-1)
+                ship2.change_pos(-1)

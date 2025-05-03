@@ -1,5 +1,5 @@
 from existing_ships import get_ship_by_name
-from ship import Ship, calculate_moves, get_random_positions
+from ship import Ship, calculate_moves, get_random_positions, calculate_moves
 from game_errors import ShipNameNotFound
 
 
@@ -51,6 +51,3 @@ if ship_2.pos < ship_1.pos:
     calculate_moves(ship_2, ship_1, ships_direction)
 else:
     calculate_moves(ship_1, ship_2, ships_direction)
-
-print('-' * 30)
-Ship.print_ships(ship_1, ship_2)
