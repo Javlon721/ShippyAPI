@@ -100,7 +100,7 @@ class Ship:
         return abs(self.pos - ship.pos)
 
     def can_attack(self, ship):
-        return self.get_distance_between(ship) <= self.attack_range and self.is_alive()
+        return self.get_distance_between(ship) <= self.attack_range
 
     def attack(self, ship):
         if not self.can_attack(ship):
