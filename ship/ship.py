@@ -87,9 +87,7 @@ class Ship:
         distance = attacker.get_distance_between(attacked)
         damage = attacker.damage
         for fn in chain(attacker.attack_modifiers, attacked.defence_modifiers):
-            print(f"Before {fn.__name__} modifier damage is {damage}")
             damage = fn(distance, damage, attacker, attacked)
-            print(f"After {fn.__name__} modifier damage is {damage}")
         return damage
 
     def change_pos(self, direction=1):
@@ -105,26 +103,22 @@ class Ship:
         return self.get_distance_between(ship) <= self.attack_range and self.is_alive()
 
     def attack(self, ship):
-        print('-' * 30)
-        print(f'{self.name} at {self.pos} while {ship.name} at {ship.pos}. Distence between ships is {self.get_distance_between(ship)}')
-        print(
-            f'{self.name} is attacking {ship.name}. {ship.name} healthpoint is {ship.hp}')
         if not self.can_attack(ship):
-            print(f'{ship.name} is too far (distance is {self.get_distance_between(ship)} when expecting {self.attack_range}) or {self.name} was destroyed (current healthpoint is {self.hp})')
+            # print(f'{ship.name} is too far (distance is {self.get_distance_between(ship): .02f} when expecting {self.attack_range}) or {self.name} was destroyed ({self.name} healthpoint is {self.hp})')
+            pass
         else:
             total_damage = Ship.apply_modifiers(attacker=self, attacked=ship)
-            ship.receive_damage(total_damage)
             print(
-                f'{self.name} hit {ship.name} with {total_damage} damage. {ship.name} healthpoint is {ship.hp}')
+                f'{self.name} hit {ship.name} with {total_damage} damage.')
+            ship.receive_damage(total_damage)
 
     def is_alive(self):
         return self.hp > 0
 
     def receive_damage(self, damage):
+        self.hp = max(0, self.hp - damage)
         if not self.is_alive():
-            print(f'{self.name} has already destroyed!')
-        else:
-            self.hp = max(0, self.hp - damage)
+            print(f'{self.name} has been destroyed!')
 
     # * Я хотел использовать cache decorator, но потом передумал.
     # * Буду рад если вы дадите на счет этого коментарий, валидно ли его использовать для этой функциональности.

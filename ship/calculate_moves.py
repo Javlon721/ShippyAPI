@@ -10,9 +10,10 @@ def create_attack_checker(ship1, ship2, max_attack_distance):
 
 
 def ships_battle_per_move(ship1, ship2):
+    print(f'Distence between {ship1.name} and {ship2.name} is {ship1.get_distance_between(ship2): .02f}')
     ship1.attack(ship2)
     ship2.attack(ship1)
-
+    print()
 
 def is_both_alive(ship1, ship2):
     return ship1.is_alive() and ship2.is_alive()
