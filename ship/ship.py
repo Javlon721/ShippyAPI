@@ -148,9 +148,10 @@ class Ship:
         if not self.can_attack(ship):
             print(f'{ship.name} is too far (distance is {self.get_distance_between(ship)} when expecting {self.attack_range}) or {self.name} was destroyed (current healthpoint is {self.hp})')
         else:
-            ship.receive_damage(Ship.apply_modifiers(attacker=self, attacked=ship))
+            total_damage = Ship.apply_modifiers(attacker=self, attacked=ship)
+            ship.receive_damage(total_damage)
             print(
-                f'{self.name} has {self.damage} damage and hit {ship.name}. {ship.name} healthpoint is {ship.hp}')
+                f'{self.name} hit {ship.name} with {total_damage} damage. {ship.name} healthpoint is {ship.hp}')
 
     def is_alive(self):
         return self.hp > 0
