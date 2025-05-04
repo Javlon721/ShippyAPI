@@ -1,5 +1,5 @@
 from existing_ships import get_ship_by_name
-from ship import calculate_moves, get_random_positions, calculate_moves
+from ship import Ship, calculate_moves, get_random_positions, calculate_moves
 from game_errors import ShipNameNotFound
 
 
@@ -34,9 +34,15 @@ rand_pos1, rand_pos2 = get_random_positions(distance_between_ships)
 ship_1.set_pos(rand_pos1)
 ship_2.set_pos(rand_pos2)
 
-#* Нужно поменять направление погони относительно где стоит ship_2.
-#* Например если ship_2 догоняет ship_1 и если позиция ship_2 правее чем ship_1
-#* то их позиции уменьшаются (<- ship_1 <- ship_2) и наоборот (ship_2 -> ship_1 ->)
+#* если сразу ничнья то дистанция не отображается, поэтому ввел это тавтологию. 
+#* Буду рад если вы дадите коментарий к такому подходу!
+print(
+    f'Distence between {ship_1.name} and {ship_2.name} is {ship_1.get_distance_between(ship_2): .02f}')
+print()
+
+# * Нужно поменять направление погони относительно где стоит ship_2.
+# * Например если ship_2 догоняет ship_1 и если позиция ship_2 правее чем ship_1
+# * то их позиции уменьшаются (<- ship_1 <- ship_2) и наоборот (ship_2 -> ship_1 ->)
 if ship_2.pos < ship_1.pos:
     direction_map = {
         '2': '3',

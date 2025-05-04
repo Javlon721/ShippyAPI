@@ -78,7 +78,7 @@ class Ship:
     def apply_modifiers(attacker, attacked):
         """
         Применяет модификаторы атакующего (attacker), а после модификаторы атакуемого (attacked) 
-        к рассчету урона (damage)
+        к рассчету урона атакующего
 
         Параметры:
             attacker (Ship) - экземпляр класса Ship, тот кто атакует
