@@ -61,54 +61,18 @@ class Ship:
 
     def __init__(self, name, ship_type, nation, damage, atack_range, hp, velocity):
         # * Я предплолагаю, что данные будут поступать правильные, поэтому обошелся без проверки
-        self._name = name
-        self._ship_type = ship_type
-        self._nation = nation
-        self._damage = damage
-        self._attack_range = atack_range
-        self._hp = hp
-        self._velocity = velocity
-        self._pos = 0
+        self.name = name
+        self.ship_type = ship_type
+        self.nation = nation
+        self.damage = damage
+        self.attack_range = atack_range
+        self.hp = hp
+        self.velocity = velocity
+        self.pos = 0
         self.attack_modifiers = modifiers["by_ship"].get(self.name, []) \
             + modifiers["by_ship_type"].get(self.ship_type, [])
         self.defence_modifiers = modifiers["by_ship_nation"].get(
             self.nation, [])
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def ship_type(self):
-        return self._ship_type
-
-    @property
-    def nation(self):
-        return self._nation
-
-    @property
-    def damage(self):
-        return self._damage
-
-    @property
-    def hp(self):
-        return self._hp
-
-    @hp.setter
-    def hp(self, val):
-        self._hp = val
-
-    @property
-    def pos(self):
-        return round(self._pos, 2)
-
-    @property
-    def attack_range(self):
-        return self._attack_range
-
-    @property
-    def velocity(self):
-        return self._velocity
 
     @staticmethod
     def apply_modifiers(attacker, attacked):
@@ -129,10 +93,10 @@ class Ship:
         return damage
 
     def change_pos(self, direction=1):
-        self._pos += self._velocity * direction
+        self.pos += self.velocity * direction
 
     def set_pos(self, val=0):
-        self._pos = val
+        self.pos = val
 
     def get_distance_between(self, ship):
         return abs(self.pos - ship.pos)
