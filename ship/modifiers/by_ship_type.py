@@ -29,5 +29,5 @@ def battleships(distance, damage,  attacker, attacked):
     """
     decrease = 100
     if distance >= 10:
-        return damage - (distance - 10 + 1) * decrease
+        return damage - (round(distance) - 10 + 1) * decrease
     return damage
