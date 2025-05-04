@@ -1,17 +1,17 @@
 from existing_ships import get_ship_by_name
-from ship import Ship, calculate_moves, get_random_positions, calculate_moves
+from ship import calculate_moves, get_random_positions, calculate_moves
 from game_errors import ShipNameNotFound
 
 
 while True:
     try:
-        ship_1 = get_ship_by_name(input("Enter first ship name: "))
+        ship_1 = get_ship_by_name(input("Enter first ship name: ").strip())
         break
     except ShipNameNotFound as e:
         print(e)
 while True:
     try:
-        ship_2 = get_ship_by_name(input("Enter second ship name: "))
+        ship_2 = get_ship_by_name(input("Enter second ship name: ").strip())
         break
     except ShipNameNotFound as e:
         print(e)
@@ -30,16 +30,9 @@ while True:
             print('Enter valid number (0, 1, 2 or 3)')
 print()
 
-# ship_1 = get_ship_by_name('Hood')
-# ship_2 = get_ship_by_name('Hipper')
-# ships_direction = input("Enter ships direction (0, 1, 2 or 3): ")
-# distance_between_ships = int(input("Enter distance between ships (km): "))
-
 rand_pos1, rand_pos2 = get_random_positions(distance_between_ships)
 ship_1.set_pos(rand_pos1)
 ship_2.set_pos(rand_pos2)
-# ship_1.set_pos(0)
-# ship_2.set_pos(40)
 
 #* Нужно поменять направление погони относительно где стоит ship_2.
 #* Например если ship_2 догоняет ship_1 и если позиция ship_2 правее чем ship_1
@@ -57,7 +50,7 @@ else:
 """
 Использовал логическую эквивалентность (A <--> B), так как логическая эквивалентность истинна тогда и только тогда, 
 когда оба операнда имеют одинаковое логическое значение (оба истинны или оба ложны).
-Если оба истина то корабли живы или если оба ложны то мертвы
+Если оба истина то корабли живы или если оба ложны то уничтожены
 """
 if not (ship_1.is_alive() ^ ship_2.is_alive()):
     print('Ничья')

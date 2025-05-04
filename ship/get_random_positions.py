@@ -10,6 +10,7 @@ def get_random_positions(diff=0, l=-100, r=100):
         l (int) - наименьшее желанное число (defaul=-100)
         r (int) - наибольшее желанное число (defaul=100)
     """
+    #* Cделал shuffle чтобы корабли находились в рандомном положении (правее или левее друг друга)
     pos1 = randint(l, r)
     pos2 = pos1 + diff
     shuffle_pos = [pos1, pos2]
