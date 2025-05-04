@@ -30,46 +30,4 @@ def is_both_alive(ship1, ship2):
 
 def calculate_moves(ship1, ship2, ships_direction):
     can_any_attack = create_attack_checker(ship1, ship2)
-    match ships_direction:
-        case '0':
-            """
-            Пока ship2 приближается к ship1 или один из них или оба могут атаковать (ship_1 -> <- ship_2)
-            """
-            while ship2.pos > ship1.pos or can_any_attack():
-                ships_battle_per_move(ship1, ship2)
-                if not is_both_alive(ship1, ship2):
-                    break
-                ship1.change_pos()
-                ship2.change_pos(-1)
-        case '1':
-            """
-            Пока один из них или оба могут атаковать (<- ship_1  ship_2 ->)
-            """
-            while can_any_attack():
-                ships_battle_per_move(ship1, ship2)
-                if not is_both_alive(ship1, ship2):
-                    break
-                ship1.change_pos(-1)
-                ship2.change_pos()
-        case '2':
-            """
-            Пока ship1 догоняет ship2 или расстояние между ними такое, что один из них или оба могут атаковать
-            (ship_1 -> ship_2 ->)
-            """
-            while (ship2.pos > ship1.pos and ship1.velocity > ship2.velocity) or can_any_attack():
-                ships_battle_per_move(ship1, ship2)
-                if not is_both_alive(ship1, ship2):
-                    break
-                ship1.change_pos()
-                ship2.change_pos()
-        case '3':
-            """
-            Пока ship2 догоняет ship1 или расстояние между ними такое, что один из них или оба могут атаковать
-            (<- ship_1 <- ship_2 )
-            """
-            while (ship2.pos > ship1.pos and ship2.velocity > ship1.velocity) or can_any_attack():
-                ships_battle_per_move(ship1, ship2)
-                if not is_both_alive(ship1, ship2):
-                    break
-                ship1.change_pos(-1)
-                ship2.change_pos(-1)
+    

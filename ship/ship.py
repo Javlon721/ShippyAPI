@@ -1,5 +1,7 @@
 from ship.modifiers import by_ship_type, by_ship_nation, by_ship
+from ship.util_classes import Coords, Azimuth
 from itertools import chain
+import math
 
 
 def get_row_format():
@@ -11,7 +13,8 @@ def get_row_format():
         Второе значение - строка отформатированных названий колонок
 
     Для использования метода template.format используйте последовательность ключей словаря
-    cols - ("Название", "Тип", "Нация", "Урон", "Дистанция атаки(км)", "Очки прочности", "Скорость (км/ход)", "Местонахождение (по координате х)")
+    cols - ("Название", "Тип", "Нация", "Урон", "Дистанция атаки(км)", "Очки прочности", "Скорость (км/ход)", "Координаты",
+    "Азимут")
     """
 
     cols = {
@@ -22,7 +25,8 @@ def get_row_format():
         "Дистанция атаки(км)": 22,
         "Очки прочности": 18,
         "Скорость (км/ход)": 20,
-        "Местонахождение (по координате х)": 35,
+        "Координаты": 15,
+        "Азимут": 6,
     }
     template = "".join(["{:<" + str(cols[key]) + "}" for key in cols])
     return (template, template.format(*cols.keys()))
@@ -68,7 +72,8 @@ class Ship:
         self.attack_range = atack_range
         self.hp = hp
         self.velocity = velocity
-        self.pos = 0
+        self.coords = Coords(0, 0)
+        self.azimuth = Azimuth(0)
         self.attack_modifiers = modifiers["by_ship"].get(self.name, []) \
             + modifiers["by_ship_type"].get(self.ship_type, [])
         self.defence_modifiers = modifiers["by_ship_nation"].get(
@@ -90,14 +95,30 @@ class Ship:
             damage = fn(distance, damage, attacker, attacked)
         return damage
 
-    def change_pos(self, direction=1):
-        self.pos += self.velocity * direction
+    def change_coords(self):
+        """
+        Изменяет положение корабля за 1 шаг
+        """
+        self.coords.change_coords(self.velocity, self.azimuth.azimuth_in_rad)
 
-    def set_pos(self, val=0):
-        self.pos = val
+    def set_coords(self, x, y):
+        self.coords.x = x
+        self.coords.y = y
+
+    def set_azimuth(self, azimuth):
+        self.azimuth.set_azimuth(azimuth)
 
     def get_distance_between(self, ship):
-        return abs(self.pos - ship.pos)
+        """
+        Функция нахождения расстояние между двумя точками по их координатам, если заданы две точки:
+            A с координатами (x1, y1)
+            B с координатами (x2, y2)
+        то расстояние между ними вычисляется по формуле:
+        distance = sqrt((x2 - x1)^2 + (y2 - y1)^2)
+        """
+        distance = math.sqrt(abs(self.coords.x - ship.coords.x)
+                             ** 2 + abs(self.coords.y - ship.coords.y) ** 2)
+        return round(distance, 2)
 
     def can_attack(self, ship):
         return self.get_distance_between(ship) <= self.attack_range
@@ -137,7 +158,8 @@ class Ship:
         return Ship._format_template.format(
             self.name, self.ship_type, self.nation,
             str(self.damage), str(self.attack_range),
-            str(self.hp), str(self.velocity), str(self.pos)
+            str(self.hp), str(self.velocity), str(
+                (self.coords.x, self.coords.y)), str(self.azimuth.azimuth)
         )
 
     @staticmethod
