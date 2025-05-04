@@ -3,41 +3,43 @@ from ship import Ship, calculate_moves, get_random_positions, calculate_moves
 from game_errors import ShipNameNotFound
 
 
-# while True:
-#     try:
-#         ship_1 = get_ship_by_name(input("Enter first ship name: "))
-#         break
-#     except ShipNameNotFound as e:
-#         print(e)
-# while True:
-#     try:
-#         ship_2 = get_ship_by_name(input("Enter second ship name: "))
-#         break
-#     except ShipNameNotFound as e:
-#         print(e)
-# while True:
-#     distance_between_ships = input("Enter distance between ships (km): ")
-#     if distance_between_ships.isdigit():
-#         distance_between_ships = float(distance_between_ships)
-#         break
-#     print('Enter valid number')
-# while True:
-#     ships_direction = input("Enter ships direction (0, 1, 2 or 3): ")
-#     match ships_direction:
-#         case '0' | "1" | "2" | "3":
-#             break
-#         case _:
-#             print('Enter valid number (0, 1, 2 or 3)')
+while True:
+    try:
+        ship_1 = get_ship_by_name(input("Enter first ship name: "))
+        break
+    except ShipNameNotFound as e:
+        print(e)
+while True:
+    try:
+        ship_2 = get_ship_by_name(input("Enter second ship name: "))
+        break
+    except ShipNameNotFound as e:
+        print(e)
+while True:
+    distance_between_ships = input("Enter distance between ships (km): ")
+    if distance_between_ships.isdigit():
+        distance_between_ships = float(distance_between_ships)
+        break
+    print('Enter valid number')
+while True:
+    ships_direction = input("Enter ships direction (0, 1, 2 or 3): ")
+    match ships_direction:
+        case '0' | "1" | "2" | "3":
+            break
+        case _:
+            print('Enter valid number (0, 1, 2 or 3)')
+print()
 
-
-ship_1 = get_ship_by_name('Hood')
-ship_2 = get_ship_by_name('Bismarck')
-ships_direction = input("Enter ships direction (0, 1, 2 or 3): ")
-distance_between_ships = int(input("Enter distance between ships (km): "))
+# ship_1 = get_ship_by_name('Hood')
+# ship_2 = get_ship_by_name('Hipper')
+# ships_direction = input("Enter ships direction (0, 1, 2 or 3): ")
+# distance_between_ships = int(input("Enter distance between ships (km): "))
 
 rand_pos1, rand_pos2 = get_random_positions(distance_between_ships)
 ship_1.set_pos(rand_pos1)
 ship_2.set_pos(rand_pos2)
+# ship_1.set_pos(0)
+# ship_2.set_pos(40)
 
 #* Нужно поменять направление погони относительно где стоит ship_2.
 #* Например если ship_2 догоняет ship_1 и если позиция ship_2 правее чем ship_1
