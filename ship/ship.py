@@ -1,3 +1,7 @@
+from ship.modifiers import by_ship_type, by_ship_nation, by_ship
+from itertools import chain
+
+
 def get_row_format():
     """
     Функция расчитана для построения таблицы для экземпляров класса Ship.
@@ -22,6 +26,21 @@ def get_row_format():
     }
     template = "".join(["{:<" + str(cols[key]) + "}" for key in cols])
     return (template, template.format(*cols.keys()))
+
+
+modifiers = {
+    "by_ship_type": {
+        'Крейсер': [by_ship_type.cruiser],
+        'Линкор': [by_ship_type.battleships],
+    },
+    "by_ship_nation": {
+        "Великобритания": [by_ship_nation.british_ships],
+        "Германия": [by_ship_nation.german_ships],
+    },
+    "by_ship": {
+        "Bismarck": [by_ship.bismark_hood],
+    },
+}
 
 
 class Ship:
@@ -50,6 +69,10 @@ class Ship:
         self._hp = hp
         self._velocity = velocity
         self._pos = 0
+        self.attack_modifiers = modifiers["by_ship"].get(self.name, []) \
+            + modifiers["by_ship_type"].get(self.ship_type, [])
+        self.defence_modifiers = modifiers["by_ship_nation"].get(
+            self.nation, [])
 
     @property
     def name(self):
@@ -87,6 +110,24 @@ class Ship:
     def velocity(self):
         return self._velocity
 
+    @staticmethod
+    def apply_modifiers(attacker, attacked):
+        """
+        Применяет модификаторы атакующего (attacker), а после модификаторы атакуемого (attacked) 
+        к рассчету урона (damage)
+
+        Параметры:
+            attacker (Ship) - экземпляр класса Ship, тот кто атакует
+            attacked (Ship) - экземпляр класса Ship, тот корорый получает урон
+        """
+        distance = attacker.get_distance_between(attacked)
+        damage = attacker.damage
+        for fn in chain(attacker.attack_modifiers, attacked.defence_modifiers):
+            print(f"Before {fn.__name__} modifier damage is {damage}")
+            damage = fn(distance, damage, attacker, attacked)
+            print(f"After {fn.__name__} modifier damage is {damage}")
+        return damage
+
     def change_pos(self, direction=1):
         self._pos += self._velocity * direction
 
@@ -107,7 +148,7 @@ class Ship:
         if not self.can_attack(ship):
             print(f'{ship.name} is too far (distance is {self.get_distance_between(ship)} when expecting {self.attack_range}) or {self.name} was destroyed (current healthpoint is {self.hp})')
         else:
-            ship.receive_damage(self.damage)
+            ship.receive_damage(Ship.apply_modifiers(attacker=self, attacked=ship))
             print(
                 f'{self.name} has {self.damage} damage and hit {ship.name}. {ship.name} healthpoint is {ship.hp}')
 
@@ -155,12 +196,3 @@ class Ship:
         print(Ship._formated_titles)
         for ship in ships:
             print(ship._get_row)
-
-
-def main():
-    ship_1 = get_ship_by_name('Hipper')
-    ship_2 = get_ship_by_name('Belfast')
-
-
-if __name__ == "main":
-    main()
