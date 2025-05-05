@@ -28,6 +28,16 @@ def is_both_alive(ship1, ship2):
     return ship1.is_alive() and ship2.is_alive()
 
 
-def calculate_moves(ship1, ship2, ships_direction):
+def calculate_moves(ship1, ship2):
     can_any_attack = create_attack_checker(ship1, ship2)
-    
+    first_distance_between_ships = ship1.get_distance_between(ship2)
+
+    """
+    Пока один корабли сближаются или один из них или оба могут атаковать
+    """
+    while can_any_attack() or ship1.get_distance_between(ship2) <= first_distance_between_ships:
+        ships_battle_per_move(ship1, ship2)
+        if not is_both_alive(ship1, ship2):
+            break
+        ship1.change_coords()
+        ship2.change_coords()

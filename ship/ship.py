@@ -1,7 +1,6 @@
 from ship.modifiers import by_ship_type, by_ship_nation, by_ship
 from ship.util_classes import Coords, Azimuth
 from itertools import chain
-import math
 
 
 def get_row_format():
@@ -116,8 +115,8 @@ class Ship:
         то расстояние между ними вычисляется по формуле:
         distance = sqrt((x2 - x1)^2 + (y2 - y1)^2)
         """
-        distance = math.sqrt(abs(self.coords.x - ship.coords.x)
-                             ** 2 + abs(self.coords.y - ship.coords.y) ** 2)
+        distance = (abs(self.coords.x - ship.coords.x)
+                    ** 2 + abs(self.coords.y - ship.coords.y) ** 2) ** 0.5
         return round(distance, 2)
 
     def can_attack(self, ship):

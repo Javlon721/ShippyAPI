@@ -23,3 +23,18 @@ def get_ship_by_name(ship_name):
             return Ship("Bismarck", "Линкор", "Германия", 7000, 20, 50000, 1.3)
         case _:
             raise ShipNameNotFound(f'Ship name does not exist: {ship_name}')
+
+def input_validated_ship(msg):
+    """
+    Возвращяет отвалидированный экземпляр класса Ship из ввода пользователя
+    
+    Параметры:
+        msg (str) - сообщение, которое выводиться в консоли при вводе данных
+    """
+    while True:
+        try:
+            ship = get_ship_by_name(input(msg).strip())
+            break
+        except ShipNameNotFound as e:
+            print(e)
+    return ship

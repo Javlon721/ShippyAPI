@@ -30,7 +30,7 @@ class Coords:
             dy = y0 + velocity * sin(rad)
         """
         self.x = round(self.x + velocity * math.cos(rad), 2)
-        self.y = round(self.y + velocity *math.sin(rad), 2)
+        self.y = round(self.y + velocity * math.sin(rad), 2)
 
 
 class Azimuth:
@@ -46,14 +46,14 @@ class Azimuth:
     def set_ship_heading_angle(self):
         """
         Функция рассчитывает радианы для дальнейших вычислений, 
-        Для этого переводит азимут в “математический угол”, таким образом:
-        angle = 90 - азимут и сразу переводим в радианы
+        Для этого переводит азимут в “математический угол” таким образом:
+        angle = 90 - азимут и после переводит в радианы
         """
         self.azimuth_in_rad = round(math.radians(90 - self.azimuth), 5)
 
     def set_azimuth(self, azimuth):
         """
-        Для дальнейшего удобства азимут сразу перевожу в радианы
+        Задает азимут корабля
         """
         self.azimuth = azimuth
         self.set_ship_heading_angle()
