@@ -7,12 +7,15 @@ def create_attack_checker(ship1, ship2):
     """
     # * Я замкнул параметры (ship1, ship2), чтобы в функции calculate_moves
     # * при неоднократном вызове функции can_any_attack не дублировать передачу параметров.
+    # * А так же чтобы рассчет дистанции кораблей был минимизирован.
     # * Буду рад если вы дадите коментарий к такому подходу!
 
     max_attack_distance = max(ship1.attack_range, ship2.attack_range)
+    first_distance = ship1.get_distance_between(ship2)
 
     def can_any_attack():
-        return ship1.get_distance_between(ship2) <= max_attack_distance
+        current_distance = ship1.get_distance_between(ship2)
+        return current_distance <= max_attack_distance or current_distance <= first_distance
     return can_any_attack
 
 
@@ -30,12 +33,10 @@ def is_both_alive(ship1, ship2):
 
 def calculate_moves(ship1, ship2):
     can_any_attack = create_attack_checker(ship1, ship2)
-    first_distance_between_ships = ship1.get_distance_between(ship2)
-
     """
-    Пока один корабли сближаются или один из них или оба могут атаковать
+    Пока корабли сближаются или один из них или оба могут атаковать
     """
-    while can_any_attack() or ship1.get_distance_between(ship2) <= first_distance_between_ships:
+    while can_any_attack():
         ships_battle_per_move(ship1, ship2)
         if not is_both_alive(ship1, ship2):
             break
