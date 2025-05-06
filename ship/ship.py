@@ -86,7 +86,7 @@ class Ship:
 
         Параметры:
             attacker (Ship) - экземпляр класса Ship, тот кто атакует
-            attacked (Ship) - экземпляр класса Ship, тот корорый получает урон
+            attacked (Ship) - экземпляр класса Ship, тот который получает урон
         """
         distance = attacker.get_distance_between(attacked)
         damage = attacker.damage
