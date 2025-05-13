@@ -1,2 +1,5 @@
 test/
 __pycache__/
+tz/
+.DS_Store
+**/.DS_Store
