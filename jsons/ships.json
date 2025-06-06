@@ -1,0 +1,54 @@
+[
+	{
+		"damage": 7000,
+		"nation": "Германия",
+		"name": "Bismarck",
+		"ship_type": "Линкор",
+		"attack_range": 20,
+		"hp": 50000,
+		"velocity": 1.3,
+		"modifiers": {
+			"attack_modifiers": ["bismark_hood", "battleships"],
+			"defence_modifiers": ["german_ships"]
+		}
+	},
+	{
+		"name": "Hipper",
+		"ship_type": "Крейсер",
+		"nation": "Германия",
+		"damage": 4000,
+		"attack_range": 18,
+		"hp": 35000,
+		"velocity": 2,
+		"modifiers": {
+			"attack_modifiers": ["cruiser"],
+			"defence_modifiers": ["german_ships"]
+		}
+	},
+	{
+		"name": "Belfast",
+		"ship_type": "Крейсер",
+		"nation": "Великобритания",
+		"damage": 3000,
+		"attack_range": 14,
+		"hp": 30000,
+		"velocity": 3,
+		"modifiers": {
+			"attack_modifiers": ["cruiser"],
+			"defence_modifiers": ["british_ships"]
+		}
+	},
+	{
+		"name": "Hood",
+		"ship_type": "Линкор",
+		"nation": "Великобритания",
+		"damage": 6000,
+		"attack_range": 22,
+		"hp": 45000,
+		"velocity": 1.5,
+		"modifiers": {
+			"attack_modifiers": ["battleships"],
+			"defence_modifiers": ["british_ships"]
+		}
+	}
+]

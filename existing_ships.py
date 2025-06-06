@@ -1,5 +1,7 @@
 from ship import Ship
 from game_errors import ShipNameNotFound
+import json
+
 
 def get_ship_by_name(ship_name):
     """
@@ -12,22 +14,19 @@ def get_ship_by_name(ship_name):
     Возвращает экземпляр класса Ship с заготовленными характеристиками корабля
     """
 
-    match ship_name:
-        case "Belfast":
-            return Ship('Belfast', "Крейсер", "Великобритания", 3000, 14, 30000, 3)
-        case "Hood":
-            return Ship("Hood", "Линкор", "Великобритания", 6000, 22, 45000, 1.5)
-        case "Hipper":
-            return Ship("Hipper", "Крейсер", "Германия", 4000, 18, 35000, 2)
-        case "Bismarck":
-            return Ship("Bismarck", "Линкор", "Германия", 7000, 20, 50000, 1.3)
-        case _:
-            raise ShipNameNotFound(f'Ship name does not exist: {ship_name}')
+    with open('jsons/ships.json', encoding='UTF-8') as file:
+        data = json.load(file)
+        for item in data:
+            if item['name'] == ship_name:
+                return Ship(**item)
+
+        raise ShipNameNotFound(f'Ship "{ship_name}" has not found!')
+
 
 def input_validated_ship(msg):
     """
     Возвращяет отвалидированный экземпляр класса Ship из ввода пользователя
-    
+
     Параметры:
         msg (str) - сообщение, которое выводиться в консоли при вводе данных
     """
@@ -38,3 +37,8 @@ def input_validated_ship(msg):
         except ShipNameNotFound as e:
             print(e)
     return ship
+
+
+if __name__ == "__main__":
+    ship_1 = get_ship_by_name('Belfast')
+    print(ship_1.modifiers)

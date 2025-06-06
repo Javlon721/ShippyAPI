@@ -1,4 +1,4 @@
-from ship.modifiers import by_ship_type, by_ship_nation, by_ship
+from ship.modifiers.modifiers import Modifiers
 from ship.util_classes import Coords, Azimuth
 from itertools import chain
 
@@ -31,19 +31,19 @@ def get_row_format():
     return (template, template.format(*cols.keys()))
 
 
-modifiers = {
-    "by_ship_type": {
-        'Крейсер': [by_ship_type.cruiser],
-        'Линкор': [by_ship_type.battleships],
-    },
-    "by_ship_nation": {
-        "Великобритания": [by_ship_nation.british_ships],
-        "Германия": [by_ship_nation.german_ships],
-    },
-    "by_ship": {
-        "Bismarck": [by_ship.bismark_hood],
-    },
-}
+# modifiers = {
+#     "by_ship_type": {
+#         'Крейсер': [by_ship_type.cruiser],
+#         'Линкор': [by_ship_type.battleships],
+#     },
+#     "by_ship_nation": {
+#         "Великобритания": [by_ship_nation.british_ships],
+#         "Германия": [by_ship_nation.german_ships],
+#     },
+#     "by_ship": {
+#         "Bismarck": [by_ship.bismark_hood],
+#     },
+# }
 
 
 class Ship:
@@ -55,28 +55,25 @@ class Ship:
         ship_type (str): тип корабля
         nation (str): к какой стране относится корабль
         damage (float): урон корабля
-        atack_range (float): дистанция атаки корабля
+        attack_range (float): дистанция атаки корабля
         hp (float): очки прочности корабля
         velocity (float): Скорость (км / ход)
     """
 
     _format_template, _formated_titles = get_row_format()
 
-    def __init__(self, name, ship_type, nation, damage, atack_range, hp, velocity):
+    def __init__(self, name, ship_type, nation, damage, attack_range, hp, velocity, modifiers):
         # * Я предплолагаю, что данные будут поступать правильные, поэтому обошелся без проверки
         self.name = name
         self.ship_type = ship_type
         self.nation = nation
         self.damage = damage
-        self.attack_range = atack_range
+        self.attack_range = attack_range
         self.hp = hp
         self.velocity = velocity
         self.coords = Coords(0, 0)
         self.azimuth = Azimuth(0)
-        self.attack_modifiers = modifiers["by_ship"].get(self.name, []) \
-            + modifiers["by_ship_type"].get(self.ship_type, [])
-        self.defence_modifiers = modifiers["by_ship_nation"].get(
-            self.nation, [])
+        self.modifiers = Modifiers(modifiers)
 
     @staticmethod
     def apply_modifiers(attacker, attacked):
@@ -90,7 +87,7 @@ class Ship:
         """
         distance = attacker.get_distance_between(attacked)
         damage = attacker.damage
-        for fn in chain(attacker.attack_modifiers, attacked.defence_modifiers):
+        for fn in chain(attacker.modifiers.attack_modifiers, attacked.modifiers.defence_modifiers):
             damage = fn(distance, damage, attacker, attacked)
         return damage
 

@@ -12,3 +12,6 @@ def bismark_hood(distance, damage,  attacker, attacked):
     if attacked.name == "Hood" and 15 <= distance <= 18:
         return damage * 2
     return damage
+
+
+modifier_list = [bismark_hood]

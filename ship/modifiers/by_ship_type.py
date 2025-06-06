@@ -33,3 +33,6 @@ def battleships(distance, damage,  attacker, attacked):
     if distance >= 10:
         return damage - (floor(distance) - 10 + 1) * decrease
     return damage
+
+
+modifier_list = [cruiser, battleships]

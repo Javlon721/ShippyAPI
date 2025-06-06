@@ -25,3 +25,6 @@ def german_ships(distance, damage,  attacker, attacked):
         attacked (Ship) - экземпляр класса Ship, тот корорый получает урон
     """
     return damage * (1 - 0.2)
+
+
+modifier_list = [british_ships, german_ships]
