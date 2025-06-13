@@ -9,8 +9,10 @@ def british_ships(distance, damage, attacker, attacked):
         attacker (Ship) - экземпляр класса Ship, тот кто атакует
         attacked (Ship) - экземпляр класса Ship, тот корорый получает урон
     """
-    if distance >= 8:
-        return damage // 2
+    ignore_distance = 8
+    ingnore_damage = 2
+    if distance >= ignore_distance:
+        return damage // ingnore_damage
     return damage
 
 
@@ -24,7 +26,8 @@ def german_ships(distance, damage,  attacker, attacked):
         attacker (Ship) - экземпляр класса Ship, тот кто атакует
         attacked (Ship) - экземпляр класса Ship, тот корорый получает урон
     """
-    return damage * (1 - 0.2)
+    ignore_damage = 0.8
+    return damage * ignore_damage
 
 
 modifier_list = [british_ships, german_ships]

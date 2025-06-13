@@ -8,9 +8,12 @@ def bismark_hood(distance, damage,  attacker, attacked):
         attacker (Ship) - экземпляр класса Ship, тот кто атакует
         attacked (Ship) - экземпляр класса Ship, тот корорый получает урон
     """
-
-    if attacked.name == "Hood" and 15 <= distance <= 18:
-        return damage * 2
+    bismark_amplify_targets = ['Hood']
+    max_amplify_distance = 18
+    min_amplify_distance = 15
+    amplify_by = 2
+    if (attacked.name in bismark_amplify_targets) and (min_amplify_distance <= distance <= max_amplify_distance):
+        return damage * amplify_by
     return damage
 
 

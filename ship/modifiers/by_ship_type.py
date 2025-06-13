@@ -1,5 +1,6 @@
 from math import floor
 
+
 def cruiser(distance, damage,  attacker, attacked):
     """
     Вычисляет увеличение урона всех крейсеров на amplify (default=4) раз
@@ -11,9 +12,10 @@ def cruiser(distance, damage,  attacker, attacked):
         attacker (Ship) - экземпляр класса Ship, тот кто атакует
         attacked (Ship) - экземпляр класса Ship, тот корорый получает урон
     """
-    amplify = 4
-    if distance <= 5:
-        return damage * amplify
+    amplify_by = 4
+    damage_aplify_distance = 5
+    if distance <= damage_aplify_distance:
+        return damage * amplify_by
     return damage
 
 
@@ -30,8 +32,9 @@ def battleships(distance, damage,  attacker, attacked):
         attacked (Ship) - экземпляр класса Ship, тот корорый получает урон
     """
     decrease = 100
-    if distance >= 10:
-        return damage - (floor(distance) - 10 + 1) * decrease
+    damage_reduction_distance = 10
+    if distance > damage_reduction_distance:
+        return damage - (floor(distance) - damage_reduction_distance) * decrease
     return damage
 
 
