@@ -1,29 +1,25 @@
-import ship.modifiers.by_ship as by_ship
-import ship.modifiers.by_ship_nation as by_ship_nation
-import ship.modifiers.by_ship_type as by_ship_type
 from itertools import chain, product
-
+from ship.modifiers.serialized_modifiers import serialized_modifiers
 
 class Modifiers:
 
     def __init__(self, modifiers):
         self.attack_modifiers = []
         self.defence_modifiers = []
-        self.get_modifiers_from(modifiers)
+        self._set_modifiers_from(modifiers)
 
-    def get_modifiers_from(self, input_modifiers):
-        raw_modifiers = self.get_raw_modifiers(input_modifiers)
-        # todo доделать поиск модификаторов, так как есть аномалии при поиске, можем пропустить нужные модификаторы
-        for el in chain(by_ship.modifier_list, by_ship_nation.modifier_list, by_ship_type.modifier_list):
-            if not len(raw_modifiers):
-                break
-            modifier_type = raw_modifiers.get(el.__name__, '')
-            if not modifier_type:
+    def _set_modifiers_from(self, input_modifiers):
+        raw_modifiers= self.get_raw_modifiers(input_modifiers)
+
+        for fn_name, fn_category in raw_modifiers:
+            fn = serialized_modifiers.get(fn_name)
+            if not fn:
+                print(f'{fn_name} not found!')
                 continue
-            self[modifier_type].append(el)
+            self[fn_category].append(fn)
 
     def get_raw_modifiers(self, input_modifiers):
-        return dict(chain.from_iterable(product(values, [key]) for key, values in input_modifiers.items()))
+        return chain.from_iterable(product(values, [key]) for key, values in input_modifiers.items())
 
     def __getitem__(self, value):
         return getattr(self, value)
