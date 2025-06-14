@@ -13,6 +13,7 @@ class Modifiers:
 
     def get_modifiers_from(self, input_modifiers):
         raw_modifiers = self.get_raw_modifiers(input_modifiers)
+        # todo доделать поиск модификаторов, так как есть аномалии при поиске, можем пропустить нужные модификаторы
         for el in chain(by_ship.modifier_list, by_ship_nation.modifier_list, by_ship_type.modifier_list):
             if not len(raw_modifiers):
                 break
