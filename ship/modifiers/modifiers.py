@@ -9,7 +9,7 @@ class Modifiers:
         self._set_modifiers_from(modifiers)
 
     def _set_modifiers_from(self, input_modifiers):
-        raw_modifiers= self.get_raw_modifiers(input_modifiers)
+        raw_modifiers= self._get_raw_modifiers(input_modifiers)
 
         for fn_name, fn_category in raw_modifiers:
             fn = serialized_modifiers.get(fn_name)
@@ -18,7 +18,7 @@ class Modifiers:
                 continue
             self[fn_category].append(fn)
 
-    def get_raw_modifiers(self, input_modifiers):
+    def _get_raw_modifiers(self, input_modifiers):
         return chain.from_iterable(product(values, [key]) for key, values in input_modifiers.items())
 
     def __getitem__(self, value):
