@@ -1,6 +1,6 @@
 from itertools import chain, product
 
-from ship.modifiers.serialized_modifiers import serialized_modifiers
+from ship.modifiers.serialized_modifiers import get_modifier_from_name
 
 
 class Modifiers:
@@ -15,7 +15,7 @@ class Modifiers:
 
         for fn_name, fn_category in raw_modifiers:
             try:
-                self[fn_category].append(serialized_modifiers.get(fn_name))
+                self[fn_category].append(get_modifier_from_name(fn_name))
             except ValueError as e:
                 print(e)
             except Exception as e:

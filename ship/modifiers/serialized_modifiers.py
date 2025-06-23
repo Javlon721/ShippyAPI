@@ -21,4 +21,8 @@ class _SerializeModifiers:
         return func
 
 
-serialized_modifiers = _SerializeModifiers()
+_serialized_modifiers = _SerializeModifiers()
+
+
+def get_modifier_from_name(name):
+    return _serialized_modifiers.get(name)
