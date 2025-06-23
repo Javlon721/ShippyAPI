@@ -1,6 +1,7 @@
-from ship import Ship
-from game_errors import ShipNameNotFound
 import json
+
+from game_errors import ShipNameNotFound
+from ship import Ship
 
 
 def get_ship_by_name(ship_name):
@@ -16,11 +17,10 @@ def get_ship_by_name(ship_name):
 
     with open('jsons/ships.json', encoding='UTF-8') as file:
         data = json.load(file)
-        for item in data:
-            if item['name'] == ship_name:
-                return Ship(**item)
-
-        raise ShipNameNotFound(f'Ship "{ship_name}" has not found!')
+        ship_info = data.get(ship_name)
+        if not ship_info:
+            raise ShipNameNotFound(f'Ship "{ship_name}" has not found!')
+        return Ship(**ship_info)
 
 
 def input_validated_ship(msg):
@@ -32,11 +32,11 @@ def input_validated_ship(msg):
     """
     while True:
         try:
-            ship = get_ship_by_name(input(msg).strip())
-            break
+            return get_ship_by_name(input(msg).strip())
         except ShipNameNotFound as e:
-            print(e)
-    return ship
+            raise ShipNameNotFound(f'Ship "{e}" has not found!')
+        except Exception as e:
+            raise Exception(e)
 
 
 if __name__ == "__main__":
