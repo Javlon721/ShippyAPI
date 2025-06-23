@@ -1,5 +1,7 @@
 from itertools import chain, product
+
 from ship.modifiers.serialized_modifiers import serialized_modifiers
+
 
 class Modifiers:
 
@@ -9,14 +11,15 @@ class Modifiers:
         self._set_modifiers_from(modifiers)
 
     def _set_modifiers_from(self, input_modifiers):
-        raw_modifiers= self._get_raw_modifiers(input_modifiers)
+        raw_modifiers = self._get_raw_modifiers(input_modifiers)
 
         for fn_name, fn_category in raw_modifiers:
-            fn = serialized_modifiers.get(fn_name)
-            if not fn:
-                print(f'{fn_name} not found!')
-                continue
-            self[fn_category].append(fn)
+            try:
+                self[fn_category].append(serialized_modifiers.get(fn_name))
+            except ValueError as e:
+                print(e)
+            except Exception as e:
+                print(e)
 
     def _get_raw_modifiers(self, input_modifiers):
         return chain.from_iterable(product(values, [key]) for key, values in input_modifiers.items())
