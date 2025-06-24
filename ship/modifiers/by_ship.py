@@ -1,4 +1,7 @@
-def bismark_hood(distance, damage,  attacker, attacked):
+from ship.modifiers.ModifiersPriority import ModifiersPriority
+
+
+def bismark_hood(distance, damage, attacker, attacked):
     """
     Bismarck наносит двойной урон по Hood с расстояния от 15 до 18 км
 
@@ -17,4 +20,7 @@ def bismark_hood(distance, damage,  attacker, attacked):
     return damage
 
 
-modifier_list = [bismark_hood]
+options = {
+    "items": [bismark_hood],
+    "priority": ModifiersPriority.BY_SHIP
+}

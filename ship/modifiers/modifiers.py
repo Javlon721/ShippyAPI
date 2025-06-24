@@ -2,6 +2,7 @@ from enum import Enum
 from itertools import chain, product
 
 from ship.modifiers.serialized_modifiers import get_modifier_from_name
+from ship.utils import bin_search
 
 
 class ModifierType(Enum):
@@ -10,10 +11,10 @@ class ModifierType(Enum):
 
 
 class Modifiers:
-    # todo modifiers by ship type must be first in attack list
+    # todo упростить это "явление" кода
     def __init__(self, modifiers):
-        self.attack_modifiers = set()
-        self.defence_modifiers = set()
+        self.attack_modifiers = []
+        self.defence_modifiers = []
         self._set_modifiers_from(modifiers)
 
     def get_modifier_fn(self, fn_name):
@@ -21,7 +22,10 @@ class Modifiers:
 
     def add_modifier(self, fn_name, modifier_type=ModifierType.ATTACK_MODIFIERS):
         try:
-            self[modifier_type.value].add(self.get_modifier_fn(fn_name))
+            target = self.get_modifier_fn(fn_name)
+            index = bin_search(self[modifier_type.value], target,
+                               lambda m, arr, target: arr[m]['priority'] > target['priority'])
+            self[modifier_type.value].insert(index, target)
         except ValueError as e:
             print(e)
         except Exception as e:
@@ -39,7 +43,7 @@ class Modifiers:
 
         for fn_name, fn_category in raw_modifiers:
             try:
-                self[fn_category].add(self.get_modifier_fn(fn_name))
+                self.add_modifier(fn_name, ModifierType(fn_category))
             except ValueError as e:
                 print(e)
             except Exception as e:
@@ -60,11 +64,14 @@ class Modifiers:
 
 if __name__ == "__main__":
     example = {
-        "attack_modifiers": ["bismark_hood", "battleships"],
+        "attack_modifiers": ["battleships", "bismark_hood", 'british_ships', 'cruiser', "bismark_hood"],
         "defence_modifiers": ["german_ships"]
     }
     modifiers = Modifiers(example)
-    modifiers.add_modifier('british_ships')
+    # modifiers.add_modifier('british_ships')
+    # modifiers.add_modifier('cruiser')
     modifiers.add_modifier('bismark_hood', ModifierType.DEFENCE_MODIFIERS)
-    modifiers.remove_modifier('battleships', ModifierType.DEFENCE_MODIFIERS)
-    print(modifiers)
+    # modifiers.remove_modifier('battleships', ModifierType.DEFENCE_MODIFIERS)
+    for el in modifiers.attack_modifiers:
+        print(el['priority'])
+    # print('defence', modifiers.defence_modifiers)

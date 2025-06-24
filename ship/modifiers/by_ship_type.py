@@ -1,7 +1,9 @@
 from math import floor
 
+from ship.modifiers.ModifiersPriority import ModifiersPriority
 
-def cruiser(distance, damage,  attacker, attacked):
+
+def cruiser(distance, damage, attacker, attacked):
     """
     Вычисляет увеличение урона всех крейсеров на amplify (default=4) раз
     Крейсеры наносят в 4 раза больше урона с расстояния в 5 км и ниже (считаем, что у них есть торпеды)
@@ -19,7 +21,7 @@ def cruiser(distance, damage,  attacker, attacked):
     return damage
 
 
-def battleships(distance, damage,  attacker, attacked):
+def battleships(distance, damage, attacker, attacked):
     """
     Вычисляет уменьшение урона по атакуемым на decrease (default=4)
     Линкоры наносят на 100 урона меньше за каждый километр расстояния, 
@@ -38,4 +40,7 @@ def battleships(distance, damage,  attacker, attacked):
     return damage
 
 
-modifier_list = [cruiser, battleships]
+options = {
+    "items": [cruiser, battleships],
+    "priority": ModifiersPriority.BY_TYPE
+}

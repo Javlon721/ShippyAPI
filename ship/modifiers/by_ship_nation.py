@@ -1,3 +1,6 @@
+from ship.modifiers.ModifiersPriority import ModifiersPriority
+
+
 def british_ships(distance, damage, attacker, attacked):
     """
     Все британские корабли игнорируют половину урона (с округлением вниз) 
@@ -16,7 +19,7 @@ def british_ships(distance, damage, attacker, attacked):
     return damage
 
 
-def german_ships(distance, damage,  attacker, attacked):
+def german_ships(distance, damage, attacker, attacked):
     """
     Все немецкие корабли получают на 20% урона меньше.
 
@@ -30,4 +33,7 @@ def german_ships(distance, damage,  attacker, attacked):
     return damage * ignore_damage
 
 
-modifier_list = [british_ships, german_ships]
+options = {
+    "items": [british_ships, german_ships],
+    "priority": ModifiersPriority.BY_NATION
+}
