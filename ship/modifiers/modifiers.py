@@ -4,18 +4,22 @@ from ship.modifiers.serialized_modifiers import get_modifier_from_name
 
 
 class Modifiers:
-
+    # todo add add and remove handlers
+    # todo to reuse get_modifier_from_name more natural need get method for this
     def __init__(self, modifiers):
         self.attack_modifiers = []
         self.defence_modifiers = []
         self._set_modifiers_from(modifiers)
+
+    def get_modifier_fn(self, fn_name):
+        return get_modifier_from_name(fn_name)
 
     def _set_modifiers_from(self, input_modifiers):
         raw_modifiers = self._get_raw_modifiers(input_modifiers)
 
         for fn_name, fn_category in raw_modifiers:
             try:
-                self[fn_category].append(get_modifier_from_name(fn_name))
+                self[fn_category].append(self.get_modifier_fn(fn_name))
             except ValueError as e:
                 print(e)
             except Exception as e:
@@ -36,7 +40,7 @@ class Modifiers:
 
 if __name__ == "__main__":
     example = {
-        "attack_modifiers": ["bismark_hood", "battleships"],
+        "attack_modifiesrs": ["bismark_hood", "battleships"],
         "defence_modifiers": ["german_ships"]
     }
     modifiers = Modifiers(example)
