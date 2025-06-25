@@ -19,7 +19,7 @@ class Modifiers:
 
     def add_modifier(self, fn_name, modifier_type=ModifierType.ATTACK_MODIFIERS):
         try:
-            target = self._get_modifier_fn(fn_name)
+            target = self._get_modifier_from_db(fn_name)
             index = bin_search(self[modifier_type.value], target,
                                lambda m, arr, target: arr[m].priority > target.priority)
             self[modifier_type.value].insert(index, target)
@@ -46,7 +46,7 @@ class Modifiers:
     def _get_modifiers_fn(self, modifier_type):
         return [modifier.modifier for modifier in self[modifier_type.value]]
 
-    def _get_modifier_fn(self, fn_name):
+    def _get_modifier_from_db(self, fn_name):
         return get_modifier_from_name(fn_name)
 
     def _set_modifiers_from(self, input_modifiers):
