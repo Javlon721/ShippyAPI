@@ -1,7 +1,7 @@
 import json
 
 from game_errors import ShipNameNotFound
-from ship import Ship
+from ship import Ship, set_ship_position
 
 
 def get_ship_by_name(ship_name):
@@ -32,7 +32,9 @@ def input_validated_ship(msg):
     """
     while True:
         try:
-            return get_ship_by_name(input(msg).strip())
+            ship = get_ship_by_name(input(msg).strip())
+            set_ship_position(ship)
+            return ship
         except ShipNameNotFound as e:
             raise ShipNameNotFound(f'Ship "{e}" has not found!')
         except Exception as e:

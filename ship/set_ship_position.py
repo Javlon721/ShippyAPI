@@ -7,11 +7,9 @@ def input_validated_number(msg):
     """
     while True:
         try:
-            x = float(input(msg))
-            break
+            return float(input(msg))
         except Exception:
             print(f'Enter valid number')
-    return x
 
 
 def set_ship_position(ship):

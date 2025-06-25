@@ -1,11 +1,8 @@
-from existing_ships import get_ship_by_name, input_validated_ship
-from ship import Ship, calculate_moves, set_ship_position
-from game_errors import ShipNameNotFound
+from existing_ships import input_validated_ship
+from ship import calculate_moves
 
 ship_1 = input_validated_ship("Enter first ship name: ")
-set_ship_position(ship_1)
 ship_2 = input_validated_ship("Enter second ship name: ")
-set_ship_position(ship_2)
 print()
 
 calculate_moves(ship_1, ship_2)
