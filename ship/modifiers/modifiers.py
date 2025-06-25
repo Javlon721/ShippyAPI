@@ -2,7 +2,6 @@ from enum import Enum
 from itertools import chain, product
 
 from ship.modifiers.serialized_modifiers import get_modifier_from
-from ship.utils import bin_search
 
 
 class ModifierType(Enum):
@@ -20,8 +19,7 @@ class Modifiers:
     def add_modifier(self, fn_name, modifier_type=ModifierType.ATTACK_MODIFIERS):
         try:
             target = self._get_modifier_from_db(fn_name)
-            index = bin_search(self[modifier_type.value], target,
-                               lambda m, arr, target: arr[m].priority > target.priority)
+            index = self._find_proper_index(self[modifier_type.value], target)
             self[modifier_type.value].insert(index, target)
         except ValueError as e:
             print(e)
@@ -56,6 +54,17 @@ class Modifiers:
     def _get_raw_modifiers(self, input_modifiers):
         return chain.from_iterable(product(values, [key]) for key, values in input_modifiers.items())
 
+    def _find_proper_index(self, arr, target):
+        left = 0
+        right = len(arr)
+        while left < right:
+            m = (left + right) // 2
+            if arr[m].priority > target.priority:
+                right = m
+            else:
+                left = m + 1
+        return left
+
     def __getitem__(self, value):
         return getattr(self, value)
 
@@ -66,7 +75,7 @@ class Modifiers:
 if __name__ == "__main__":
     example = {
         "attack_modifiers": ["battleships", "bismark_hood", 'british_ships', 'cruiser', "bismark_hood"],
-        "defence_modifiers": ["german_ships"]
+        "defence_modifiers": ["german_ships", 'cruiser', "bismark_hood"]
     }
     modifiers = Modifiers(example)
     modifiers.remove_modifier('bismark_hood')
