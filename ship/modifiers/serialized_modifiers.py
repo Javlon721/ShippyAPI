@@ -14,16 +14,13 @@ class _SerializeModifiers:
 
     def register_modifiers(self, modifiers):
         for modifier in modifiers['items']:
-            self._modifiers[modifier.__name__] = self._serialize_modifier(modifier, modifiers['priority'])
+            self._modifiers[modifier.__name__] = Modifier(modifier, modifiers['priority'])
 
     def get(self, key):
         func = self._modifiers.get(key)
         if not func:
             raise ValueError(f'{type(self).__name__}: {key} not found!')
         return func
-
-    def _serialize_modifier(self, modifier, priority):
-        return Modifier(modifier, priority)
 
 
 class Modifier:
