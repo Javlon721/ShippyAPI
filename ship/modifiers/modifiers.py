@@ -21,7 +21,7 @@ class Modifiers:
         try:
             target = self._get_modifier_fn(fn_name)
             index = bin_search(self[modifier_type.value], target,
-                               lambda m, arr, target: arr[m]['priority'] > target['priority'])
+                               lambda m, arr, target: arr[m].priority > target.priority)
             self[modifier_type.value].insert(index, target)
         except ValueError as e:
             print(e)
@@ -30,7 +30,7 @@ class Modifiers:
 
     def remove_modifier(self, fn_name, modifier_type=ModifierType.ATTACK_MODIFIERS):
         for index, fn in enumerate(self[modifier_type.value]):
-            if fn_name == fn['modifier'].__name__:
+            if fn_name == fn.modifier.__name__:
                 self[modifier_type.value].pop(index)
                 return index
         raise ValueError(f'{type(self).__name__}: Modifier {fn_name} in {modifier_type.value} not found')
@@ -44,7 +44,7 @@ class Modifiers:
         return self._get_modifiers_fn(ModifierType.DEFENCE_MODIFIERS)
 
     def _get_modifiers_fn(self, modifier_type):
-        return [modifier['modifier'] for modifier in self[modifier_type.value]]
+        return [modifier.modifier for modifier in self[modifier_type.value]]
 
     def _get_modifier_fn(self, fn_name):
         return get_modifier_from_name(fn_name)
@@ -66,11 +66,8 @@ class Modifiers:
     def __getitem__(self, value):
         return getattr(self, value)
 
-    def _extract_fns_name(self, fns, separator=', '):
-        return separator.join([str((fn['modifier'].__name__, fn['priority'].value)) for fn in fns])
-
     def __repr__(self):
-        return f'Modifiers: \n attack_modifiers: {self._extract_fns_name(self._attack_modifiers)} \n defence_modifiers: {self._extract_fns_name(self._defence_modifiers)}'
+        return f'Modifiers: \n attack_modifiers: {self._attack_modifiers} \n defence_modifiers: {self._defence_modifiers}'
 
 
 if __name__ == "__main__":

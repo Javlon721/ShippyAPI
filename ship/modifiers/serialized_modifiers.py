@@ -23,10 +23,18 @@ class _SerializeModifiers:
         return func
 
     def _serialize_modifier(self, modifier, priority):
-        return {
-            'priority': priority,
-            'modifier': modifier,
-        }
+        return Modifier(modifier, priority)
+
+
+class Modifier:
+    slots = ['priority', 'modifier', '__repr__']
+
+    def __init__(self, modifier, priority):
+        self.modifier = modifier
+        self.priority = priority
+
+    def __repr__(self):
+        return f'Modifier(modifier={self.modifier.__name__}, priority={self.priority})'
 
 
 _serialized_modifiers = _SerializeModifiers()
