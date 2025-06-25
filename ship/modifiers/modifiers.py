@@ -6,8 +6,8 @@ from ship.utils import bin_search
 
 
 class ModifierType(Enum):
-    ATTACK_MODIFIERS = 'attack_modifiers'
-    DEFENCE_MODIFIERS = 'defence_modifiers'
+    ATTACK_MODIFIERS = '_attack_modifiers'
+    DEFENCE_MODIFIERS = '_defence_modifiers'
 
 
 class Modifiers:
@@ -20,18 +20,18 @@ class Modifiers:
     def add_modifier(self, fn_name, modifier_type=ModifierType.ATTACK_MODIFIERS):
         try:
             target = self._get_modifier_fn(fn_name)
-            index = bin_search(self[f'_{modifier_type.value}'], target,
+            index = bin_search(self[modifier_type.value], target,
                                lambda m, arr, target: arr[m]['priority'] > target['priority'])
-            self[f'_{modifier_type.value}'].insert(index, target)
+            self[modifier_type.value].insert(index, target)
         except ValueError as e:
             print(e)
         except Exception as e:
             print(e)
 
     def remove_modifier(self, fn_name, modifier_type=ModifierType.ATTACK_MODIFIERS):
-        for index, fn in enumerate(self[f'_{modifier_type.value}']):
+        for index, fn in enumerate(self[modifier_type.value]):
             if fn_name == fn['modifier'].__name__:
-                self[f'_{modifier_type.value}'].pop(index)
+                self[modifier_type.value].pop(index)
                 return index
         raise ValueError(f'{type(self).__name__}: Modifier {fn_name} in {modifier_type.value} not found')
 
@@ -44,7 +44,7 @@ class Modifiers:
         return self._get_modifiers_fn(ModifierType.DEFENCE_MODIFIERS)
 
     def _get_modifiers_fn(self, modifier_type):
-        return [modifier['modifier'] for modifier in self[f'_{modifier_type.value}']]
+        return [modifier['modifier'] for modifier in self[modifier_type.value]]
 
     def _get_modifier_fn(self, fn_name):
         return get_modifier_from_name(fn_name)
@@ -54,7 +54,7 @@ class Modifiers:
 
         for fn_name, fn_category in raw_modifiers:
             try:
-                self.add_modifier(fn_name, ModifierType(fn_category))
+                self.add_modifier(fn_name, ModifierType(f'_{fn_category}'))
             except ValueError as e:
                 print(e)
             except Exception as e:
