@@ -29,9 +29,9 @@ class Modifiers:
             print(e)
 
     def remove_modifier(self, fn_name, modifier_type=ModifierType.ATTACK_MODIFIERS):
-        for index, fn in enumerate(self[modifier_type.value]):
-            if fn_name == fn.__name__:
-                self[modifier_type.value].remove(fn)
+        for index, fn in enumerate(self[f'_{modifier_type.value}']):
+            if fn_name == fn['modifier'].__name__:
+                self[f'_{modifier_type.value}'].pop(index)
                 return index
         raise ValueError(f'{type(self).__name__}: Modifier {fn_name} in {modifier_type.value} not found')
 
@@ -79,6 +79,7 @@ if __name__ == "__main__":
         "defence_modifiers": ["german_ships"]
     }
     modifiers = Modifiers(example)
+    modifiers.remove_modifier('bismark_hood')
     print(modifiers)
     # modifiers.add_modifier('british_ships')
     # modifiers.add_modifier('cruiser')
