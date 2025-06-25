@@ -53,12 +53,7 @@ class Modifiers:
         raw_modifiers = self._get_raw_modifiers(input_modifiers)
 
         for fn_name, fn_category in raw_modifiers:
-            try:
-                self.add_modifier(fn_name, ModifierType(f'_{fn_category}'))
-            except ValueError as e:
-                print(e)
-            except Exception as e:
-                print(e)
+            self.add_modifier(fn_name, ModifierType(f'_{fn_category}'))
 
     def _get_raw_modifiers(self, input_modifiers):
         return chain.from_iterable(product(values, [key]) for key, values in input_modifiers.items())
