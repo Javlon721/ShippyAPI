@@ -50,9 +50,7 @@ class Modifiers:
         return get_modifier_from_name(fn_name)
 
     def _set_modifiers_from(self, input_modifiers):
-        raw_modifiers = self._get_raw_modifiers(input_modifiers)
-
-        for fn_name, fn_category in raw_modifiers:
+        for fn_name, fn_category in self._get_raw_modifiers(input_modifiers):
             self.add_modifier(fn_name, ModifierType(f'_{fn_category}'))
 
     def _get_raw_modifiers(self, input_modifiers):
