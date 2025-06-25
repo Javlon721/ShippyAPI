@@ -37,13 +37,13 @@ class Modifiers:
 
     @property
     def attack_modifiers(self):
-        return self._get_modifiers_fn(ModifierType.ATTACK_MODIFIERS)
+        return self._get_modifiers_by(ModifierType.ATTACK_MODIFIERS)
 
     @property
     def defence_modifiers(self):
-        return self._get_modifiers_fn(ModifierType.DEFENCE_MODIFIERS)
+        return self._get_modifiers_by(ModifierType.DEFENCE_MODIFIERS)
 
-    def _get_modifiers_fn(self, modifier_type):
+    def _get_modifiers_by(self, modifier_type):
         return [modifier.modifier for modifier in self[modifier_type.value]]
 
     def _get_modifier_from_db(self, fn_name):
