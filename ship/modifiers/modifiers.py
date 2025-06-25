@@ -10,13 +10,20 @@ class ModifierType(Enum):
 
 
 class Modifiers:
-    # todo упростить это "явление" кода
     def __init__(self, modifiers):
         self._attack_modifiers = []
         self._defence_modifiers = []
         self._set_modifiers_from(modifiers)
 
     def add_modifier(self, fn_name, modifier_type=ModifierType.ATTACK_MODIFIERS):
+        """
+            Мылсли:
+
+                можно было сделать сортировку только когда мы получаем значение модификаторов
+                сохраняя при этом в кэш, чтоьы при повторном обращении не высчитывать.
+                Только при изменении количества модификаторов перемчитывать последовательность
+
+        """
         try:
             target = self._get_modifier_from_db(fn_name)
             index = self._find_proper_index(self[modifier_type.value], target)
