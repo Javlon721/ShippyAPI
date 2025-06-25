@@ -44,7 +44,7 @@
     "velocity": 3,
     "modifiers": {
       "attack_modifiers": [
-        "cruiser", "some_other_fn"
+        "cruiser"
       ],
       "defence_modifiers": [
         "british_ships"
