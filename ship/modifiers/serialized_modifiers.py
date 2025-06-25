@@ -43,8 +43,8 @@ _serialized_modifiers.register_modifiers(by_ship_type.options)
 _serialized_modifiers.register_modifiers(by_ship_nation.options)
 
 
-def get_modifier_from_name(name):
-    return _serialized_modifiers.get(name)
+def get_modifier_from(a_name):
+    return _serialized_modifiers.get(a_name)
 
 
 if __name__ == '__main__':

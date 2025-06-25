@@ -1,7 +1,7 @@
 from enum import Enum
 from itertools import chain, product
 
-from ship.modifiers.serialized_modifiers import get_modifier_from_name
+from ship.modifiers.serialized_modifiers import get_modifier_from
 from ship.utils import bin_search
 
 
@@ -47,7 +47,7 @@ class Modifiers:
         return [modifier.modifier for modifier in self[modifier_type.value]]
 
     def _get_modifier_from_db(self, fn_name):
-        return get_modifier_from_name(fn_name)
+        return get_modifier_from(fn_name)
 
     def _set_modifiers_from(self, input_modifiers):
         for fn_name, fn_category in self._get_raw_modifiers(input_modifiers):
