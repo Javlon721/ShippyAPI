@@ -1,8 +1,16 @@
 from math import floor
 
 from ship.modifiers.ModifiersPriority import ModifiersPriority
+from ship.modifiers.register_modifier import register_modifier
+
+options = {
+    "items": [],
+    "priority": ModifiersPriority.BY_TYPE
+}
+register = register_modifier(options)
 
 
+@register
 def cruiser(distance, damage, attacker, attacked):
     """
     Вычисляет увеличение урона всех крейсеров на amplify (default=4) раз
@@ -21,6 +29,7 @@ def cruiser(distance, damage, attacker, attacked):
     return damage
 
 
+@register
 def battleships(distance, damage, attacker, attacked):
     """
     Вычисляет уменьшение урона по атакуемым на decrease (default=4)
@@ -40,7 +49,5 @@ def battleships(distance, damage, attacker, attacked):
     return damage
 
 
-options = {
-    "items": [cruiser, battleships],
-    "priority": ModifiersPriority.BY_TYPE
-}
+if __name__ == '__main__':
+    print(options)

@@ -1,6 +1,14 @@
 from ship.modifiers.ModifiersPriority import ModifiersPriority
+from ship.modifiers.register_modifier import register_modifier
+
+options = {
+    "items": [],
+    "priority": ModifiersPriority.BY_NATION
+}
+register = register_modifier(options)
 
 
+@register
 def british_ships(distance, damage, attacker, attacked):
     """
     Все британские корабли игнорируют половину урона (с округлением вниз) 
@@ -19,6 +27,7 @@ def british_ships(distance, damage, attacker, attacked):
     return damage
 
 
+@register
 def german_ships(distance, damage, attacker, attacked):
     """
     Все немецкие корабли получают на 20% урона меньше.
@@ -33,7 +42,5 @@ def german_ships(distance, damage, attacker, attacked):
     return damage * ignore_damage
 
 
-options = {
-    "items": [british_ships, german_ships],
-    "priority": ModifiersPriority.BY_NATION
-}
+if __name__ == '__main__':
+    print(options)

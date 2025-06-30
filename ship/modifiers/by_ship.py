@@ -1,6 +1,15 @@
 from ship.modifiers.ModifiersPriority import ModifiersPriority
+from ship.modifiers.register_modifier import register_modifier
+
+options = {
+    'items': [],
+    "priority": ModifiersPriority.BY_SHIP
+}
+
+register = register_modifier(options)
 
 
+@register
 def bismark_hood(distance, damage, attacker, attacked):
     """
     Bismarck наносит двойной урон по Hood с расстояния от 15 до 18 км
@@ -20,7 +29,5 @@ def bismark_hood(distance, damage, attacker, attacked):
     return damage
 
 
-options = {
-    "items": [bismark_hood],
-    "priority": ModifiersPriority.BY_SHIP
-}
+if __name__ == '__main__':
+    print(options)
