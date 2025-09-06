@@ -3,11 +3,11 @@ import math
 
 class Coords:
 
-    def __init__(self, x, y):
+    def __init__(self, x: float, y: float):
         self.x = x
         self.y = y
 
-    def change_coords(self, velocity, rad):
+    def change_coords(self, velocity: float, rad: float):
         """
         Функция вычисления направления движения корабля относительно азимута
         
@@ -32,9 +32,9 @@ class Coords:
 
 class Azimuth:
 
-    def __init__(self, azimuth):
+    def __init__(self, azimuth: float):
         self.azimuth = azimuth
-        self.azimuth_in_rad = 0
+        self.azimuth_in_rad = 0.0
         self.set_ship_heading_angle()
 
     def set_ship_heading_angle(self):
@@ -45,6 +45,6 @@ class Azimuth:
         """
         self.azimuth_in_rad = round(math.radians(90 - self.azimuth), 5)
 
-    def set_azimuth(self, azimuth):
+    def set_azimuth(self, azimuth: float):
         self.azimuth = azimuth
         self.set_ship_heading_angle()
