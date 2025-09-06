@@ -83,7 +83,7 @@ class Ship(ShipInterface):
         """
         distance = attacker.get_distance_between(attacked)
         damage = attacker.damage
-        for fn in chain(attacker.modifiers.attack_modifiers, attacked.modifiers.defence_modifiers):
+        for fn in chain(attacker.modifiers.attack_fns, attacked.modifiers.defence_fns):
             damage = fn(distance, damage, attacker, attacked)
         return damage
 

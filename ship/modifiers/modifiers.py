@@ -3,7 +3,7 @@ from itertools import chain, product
 from typing import Iterable, Any
 
 from ship.modifiers.serialized_modifiers import get_modifier_from
-from ship.modifiers.utils import Modifier, bin_search
+from ship.modifiers.utils import Modifier, bin_search, ModifierFn
 
 
 class ModifierType(Enum):
@@ -49,18 +49,18 @@ class Modifiers:
         raise ValueError(f'{type(self).__name__}: Modifier {fn_name} in {modifier_type.value} not found')
 
     @property
-    def attack_modifiers(self) -> SerializedModifiers:
+    def attack_fns(self) -> list[ModifierFn]:
         return self._get_modifiers_by(ModifierType.attack)
 
     @property
-    def defence_modifiers(self) -> SerializedModifiers:
+    def defence_fns(self) -> list[ModifierFn]:
         return self._get_modifiers_by(ModifierType.defence)
 
     @classmethod
     def compare_priority(cls, m1: Modifier, m2: Modifier) -> bool:
         return m1.priority > m2.priority
 
-    def _get_modifiers_by(self, modifier_type: ModifierType):
+    def _get_modifiers_by(self, modifier_type: ModifierType) -> list[ModifierFn]:
         return [modifier.modifier for modifier in self[modifier_type.value]]
 
     def _get_modifier_from_db(self, fn_name: str) -> Modifier:
