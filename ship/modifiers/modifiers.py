@@ -7,8 +7,8 @@ from ship.modifiers.utils import Modifier, bin_search, ModifierFn
 
 
 class ModifierType(Enum):
-    attack = '_attack_modifiers'
-    defence = '_defence_modifiers'
+    attack = 'attack_modifiers'
+    defence = 'defence_modifiers'
 
 
 type RawModifiers = dict[str, list[str]]
@@ -17,8 +17,8 @@ type SerializedModifiers = list[Modifier]
 
 class Modifiers:
     def __init__(self, modifiers: RawModifiers):
-        self._attack_modifiers: SerializedModifiers = []
-        self._defence_modifiers: SerializedModifiers = []
+        self.attack_modifiers: SerializedModifiers = []
+        self.defence_modifiers: SerializedModifiers = []
         self._set_modifiers_from(modifiers)
 
     def add_modifier(self, fn_name: str, modifier_type: ModifierType):
@@ -68,7 +68,7 @@ class Modifiers:
 
     def _set_modifiers_from(self, input_modifiers: RawModifiers):
         for fn_name, fn_category in self._get_raw_modifiers(input_modifiers):
-            self.add_modifier(fn_name, ModifierType(f'_{fn_category}'))
+            self.add_modifier(fn_name, ModifierType(fn_category))
 
     def _get_raw_modifiers(self, input_modifiers: RawModifiers) -> Iterable[tuple[str, str]]:
         return chain.from_iterable(product(values, [key]) for key, values in input_modifiers.items())
@@ -77,7 +77,7 @@ class Modifiers:
         return getattr(self, value)
 
     def __repr__(self) -> str:
-        return f'Modifiers: \n attack_modifiers: {self._attack_modifiers} \n defence_modifiers: {self._defence_modifiers}'
+        return f'Modifiers: \n attack_modifiers: {self.attack_modifiers} \n defence_modifiers: {self.defence_modifiers}'
 
 
 if __name__ == "__main__":
