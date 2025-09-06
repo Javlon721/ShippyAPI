@@ -7,8 +7,8 @@ from ship.modifiers.utils import Modifier, bin_search
 
 
 class ModifierType(Enum):
-    ATTACK_MODIFIERS = '_attack_modifiers'
-    DEFENCE_MODIFIERS = '_defence_modifiers'
+    attack = '_attack_modifiers'
+    defence = '_defence_modifiers'
 
 
 type RawModifiers = dict[str, list[str]]
@@ -21,7 +21,7 @@ class Modifiers:
         self._defence_modifiers: SerializedModifiers = []
         self._set_modifiers_from(modifiers)
 
-    def add_modifier(self, fn_name: str, modifier_type=ModifierType.ATTACK_MODIFIERS):
+    def add_modifier(self, fn_name: str, modifier_type: ModifierType):
         """
             Мылсли:
 
@@ -41,7 +41,7 @@ class Modifiers:
         except Exception as e:
             print(e)
 
-    def remove_modifier(self, fn_name: str, modifier_type=ModifierType.ATTACK_MODIFIERS) -> int | None:
+    def remove_modifier(self, fn_name: str, modifier_type: ModifierType) -> int | None:
         for index, fn in enumerate(self[modifier_type.value]):
             if fn_name == fn.modifier.__name__:
                 self[modifier_type.value].pop(index)
@@ -50,11 +50,11 @@ class Modifiers:
 
     @property
     def attack_modifiers(self) -> SerializedModifiers:
-        return self._get_modifiers_by(ModifierType.ATTACK_MODIFIERS)
+        return self._get_modifiers_by(ModifierType.attack)
 
     @property
     def defence_modifiers(self) -> SerializedModifiers:
-        return self._get_modifiers_by(ModifierType.DEFENCE_MODIFIERS)
+        return self._get_modifiers_by(ModifierType.defence)
 
     @classmethod
     def compare_priority(cls, m1: Modifier, m2: Modifier) -> bool:
@@ -86,9 +86,9 @@ if __name__ == "__main__":
         "defence_modifiers": ["german_ships", 'cruiser', "bismark_hood"]
     }
     modifiers = Modifiers(example)
-    modifiers.remove_modifier('bismark_hood')
+    modifiers.remove_modifier('bismark_hood', ModifierType.attack)
     print(modifiers)
     # modifiers.add_modifier('british_ships')
     # modifiers.add_modifier('cruiser')
-    # modifiers.remove_modifier('battleships', ModifierType.DEFENCE_MODIFIERS)
+    # modifiers.remove_modifier('battleships', ModifierType.defence)
     # print('defence', modifiers.defence_modifiers)
