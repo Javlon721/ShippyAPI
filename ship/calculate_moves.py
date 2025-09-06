@@ -1,19 +1,22 @@
-def create_attack_checker(ship1, ship2):
+from ship import Ship
+
+
+def create_attack_checker(ship1: Ship, ship2: Ship):
     max_attack_distance = max(ship1.attack_range, ship2.attack_range)
     first_distance = ship1.get_distance_between(ship2)
 
-    def can_any_attack():
+    def can_any_attack() -> bool:
         current_distance = ship1.get_distance_between(ship2)
         return current_distance <= max_attack_distance or current_distance <= first_distance
 
     return can_any_attack
 
 
-def is_both_alive(ship1, ship2):
+def is_both_alive(ship1: Ship, ship2: Ship) -> bool:
     return ship1.is_alive() and ship2.is_alive()
 
 
-def calculate_moves(ship1, ship2):
+def calculate_moves(ship1: Ship, ship2: Ship):
     can_any_attack = create_attack_checker(ship1, ship2)
     """
     Пока корабли сближаются или один из них или оба могут атаковать
