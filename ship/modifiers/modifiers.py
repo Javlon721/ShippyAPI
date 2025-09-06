@@ -3,7 +3,7 @@ from itertools import chain, product
 from typing import Iterable, Any
 
 from ship.modifiers.serialized_modifiers import get_modifier_from
-from ship.modifiers.utils import Modifier
+from ship.modifiers.utils import Modifier, bin_search
 
 
 class ModifierType(Enum):
@@ -30,9 +30,11 @@ class Modifiers:
                 Только при изменении количества модификаторов перемчитывать последовательность
 
         """
+
         try:
             target = self._get_modifier_from_db(fn_name)
-            index = self._find_proper_index(self[modifier_type.value], target)
+            arr = self[modifier_type.value]
+            index = bin_search(0, len(arr), arr, target, Modifiers.compare_priority)
             self[modifier_type.value].insert(index, target)
         except ValueError as e:
             print(e)
@@ -54,6 +56,10 @@ class Modifiers:
     def defence_modifiers(self) -> SerializedModifiers:
         return self._get_modifiers_by(ModifierType.DEFENCE_MODIFIERS)
 
+    @classmethod
+    def compare_priority(cls, m1: Modifier, m2: Modifier) -> bool:
+        return m1.priority > m2.priority
+
     def _get_modifiers_by(self, modifier_type: ModifierType):
         return [modifier.modifier for modifier in self[modifier_type.value]]
 
@@ -66,17 +72,6 @@ class Modifiers:
 
     def _get_raw_modifiers(self, input_modifiers: RawModifiers) -> Iterable[tuple[str, str]]:
         return chain.from_iterable(product(values, [key]) for key, values in input_modifiers.items())
-
-    def _find_proper_index(self, arr: SerializedModifiers, target: Modifier):
-        left = 0
-        right = len(arr)
-        while left < right:
-            m = (left + right) // 2
-            if arr[m].priority > target.priority:
-                right = m
-            else:
-                left = m + 1
-        return left
 
     def __getitem__(self, value: str) -> Any:
         return getattr(self, value)

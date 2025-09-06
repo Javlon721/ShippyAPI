@@ -1,5 +1,5 @@
 from enum import IntEnum
-from typing import Protocol
+from typing import Protocol, Any, Callable
 
 
 class ShipInterface(Protocol):
@@ -47,3 +47,13 @@ def register_modifier(a_register: ModifiersOption):
         return modifier
 
     return wrapper
+
+
+def bin_search(l: int, r: int, arr: list[Any], target: Any, check: Callable[[Any, Any], bool]):
+    while l < r:
+        m = (l + r) // 2
+        if check(arr[m], target):
+            r = m
+        else:
+            l = m + 1
+    return l
