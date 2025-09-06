@@ -2,9 +2,6 @@ import math
 
 
 class Coords:
-    """
-    Для удобства жонглирования координатами
-    """
 
     def __init__(self, x, y):
         self.x = x
@@ -34,9 +31,6 @@ class Coords:
 
 
 class Azimuth:
-    """
-    Для удобства жонглирования азимутом
-    """
 
     def __init__(self, azimuth):
         self.azimuth = azimuth
@@ -52,8 +46,5 @@ class Azimuth:
         self.azimuth_in_rad = round(math.radians(90 - self.azimuth), 5)
 
     def set_azimuth(self, azimuth):
-        """
-        Задает азимут корабля
-        """
         self.azimuth = azimuth
         self.set_ship_heading_angle()

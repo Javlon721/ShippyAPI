@@ -31,21 +31,6 @@ def get_row_format():
     return (template, template.format(*cols.keys()))
 
 
-# modifiers = {
-#     "by_ship_type": {
-#         'Крейсер': [by_ship_type.cruiser],
-#         'Линкор': [by_ship_type.battleships],
-#     },
-#     "by_ship_nation": {
-#         "Великобритания": [by_ship_nation.british_ships],
-#         "Германия": [by_ship_nation.german_ships],
-#     },
-#     "by_ship": {
-#         "Bismarck": [by_ship.bismark_hood],
-#     },
-# }
-
-
 class Ship:
     """
     Класс Ship для создания различных кораблей.
@@ -63,7 +48,6 @@ class Ship:
     _format_template, _formated_titles = get_row_format()
 
     def __init__(self, name, ship_type, nation, damage, attack_range, hp, velocity, modifiers):
-        # * Я предплолагаю, что данные будут поступать правильные, поэтому обошелся без проверки
         self.name = name
         self.ship_type = ship_type
         self.nation = nation
@@ -92,9 +76,6 @@ class Ship:
         return damage
 
     def change_coords(self):
-        """
-        Изменяет положение корабля за 1 шаг
-        """
         self.coords.change_coords(self.velocity, self.azimuth.azimuth_in_rad)
 
     def set_coords(self, x, y):
@@ -137,20 +118,11 @@ class Ship:
         if not self.is_alive():
             print(f'{self.name} has been destroyed!')
 
-    # * Я хотел использовать cache decorator, но потом передумал.
-    # * Буду рад если вы дадите на счет этого коментарий, валидно ли его использовать для этой функциональности.
-
     def __str__(self):
         return Ship._formated_titles + "\n" + self._get_row
 
     @property
     def _get_row(self):
-        """
-        Getter для вывода отформатированного корабля.
-
-        Использует поле класса Ship._format_template для форматирования данных корабля.
-        """
-
         return Ship._format_template.format(
             self.name, self.ship_type, self.nation,
             str(self.damage), str(self.attack_range),
