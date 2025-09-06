@@ -42,8 +42,9 @@ class Modifiers:
             print(e)
 
     def remove_modifier(self, fn_name: str, modifier_type: ModifierType) -> int | None:
-        for index, fn in enumerate(self[modifier_type.value]):
-            if fn_name == fn.modifier.__name__:
+        modifiers: Iterable[tuple[int, Modifier]] = enumerate(self[modifier_type.value])
+        for index, fn in modifiers:
+            if fn_name == fn.name:
                 self[modifier_type.value].pop(index)
                 return index
         raise ValueError(f'{type(self).__name__}: Modifier {fn_name} in {modifier_type.value} not found')

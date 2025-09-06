@@ -28,6 +28,7 @@ class Modifier:
     def __init__(self, modifier: ModifierFn, priority: ModifiersPriority):
         self.modifier = modifier
         self.priority = priority
+        self.name = modifier.__name__
 
     def __repr__(self):
         return f'Modifier(modifier={self.modifier.__name__}, priority={self.priority})'
