@@ -34,17 +34,15 @@ class Azimuth:
 
     def __init__(self, azimuth: float):
         self.azimuth = azimuth
-        self.azimuth_in_rad = 0.0
-        self.set_ship_heading_angle()
 
-    def set_ship_heading_angle(self):
+    @property
+    def azimuth_in_rad(self) -> float:
         """
         Функция рассчитывает радианы для дальнейших вычислений. 
         Для этого переводит азимут в “математический угол” таким образом:
         angle = 90 - азимут и после переводит в радианы
         """
-        self.azimuth_in_rad = round(math.radians(90 - self.azimuth), 5)
+        return round(math.radians(90 - self.azimuth), 5)
 
     def set_azimuth(self, azimuth: float):
         self.azimuth = azimuth
-        self.set_ship_heading_angle()
