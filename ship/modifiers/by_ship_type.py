@@ -1,12 +1,9 @@
 from math import floor
 
-from ship.modifiers.ModifiersPriority import ModifiersPriority
-from ship.modifiers.register_modifier import register_modifier
+from ship.modifiers.utils import ModifiersPriority, ModifiersOption, register_modifier
 
-options = {
-    "items": [],
-    "priority": ModifiersPriority.BY_TYPE
-}
+options = ModifiersOption(priority=ModifiersPriority.BY_TYPE)
+
 register = register_modifier(options)
 
 

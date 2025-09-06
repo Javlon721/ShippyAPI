@@ -1,6 +1,7 @@
 from itertools import chain
 
-from ship.modifiers.modifiers import Modifiers
+from ship.modifiers.modifiers import Modifiers, RawModifiers
+from ship.modifiers.utils import ShipInterface
 from ship.util_classes import Coords, Azimuth
 
 
@@ -32,7 +33,7 @@ def get_row_format() -> tuple[str, str]:
     return template, template.format(*cols.keys())
 
 
-class Ship:
+class Ship(ShipInterface):
     """
     Класс Ship для создания различных кораблей.
 
@@ -57,7 +58,7 @@ class Ship:
             attack_range: float,
             hp: float,
             velocity: float,
-            modifiers: dict[str, list[str]]
+            modifiers: RawModifiers
     ):
         self.name = name
         self.ship_type = ship_type

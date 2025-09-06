@@ -1,7 +1,9 @@
 from enum import Enum
 from itertools import chain, product
+from typing import Iterable, Any
 
 from ship.modifiers.serialized_modifiers import get_modifier_from
+from ship.modifiers.utils import Modifier
 
 
 class ModifierType(Enum):
@@ -9,13 +11,17 @@ class ModifierType(Enum):
     DEFENCE_MODIFIERS = '_defence_modifiers'
 
 
+type RawModifiers = dict[str, list[str]]
+type SerializedModifiers = list[Modifier]
+
+
 class Modifiers:
-    def __init__(self, modifiers):
-        self._attack_modifiers = []
-        self._defence_modifiers = []
+    def __init__(self, modifiers: RawModifiers):
+        self._attack_modifiers: SerializedModifiers = []
+        self._defence_modifiers: SerializedModifiers = []
         self._set_modifiers_from(modifiers)
 
-    def add_modifier(self, fn_name, modifier_type=ModifierType.ATTACK_MODIFIERS):
+    def add_modifier(self, fn_name: str, modifier_type=ModifierType.ATTACK_MODIFIERS):
         """
             Мылсли:
 
@@ -33,7 +39,7 @@ class Modifiers:
         except Exception as e:
             print(e)
 
-    def remove_modifier(self, fn_name, modifier_type=ModifierType.ATTACK_MODIFIERS):
+    def remove_modifier(self, fn_name: str, modifier_type=ModifierType.ATTACK_MODIFIERS) -> int | None:
         for index, fn in enumerate(self[modifier_type.value]):
             if fn_name == fn.modifier.__name__:
                 self[modifier_type.value].pop(index)
@@ -41,27 +47,27 @@ class Modifiers:
         raise ValueError(f'{type(self).__name__}: Modifier {fn_name} in {modifier_type.value} not found')
 
     @property
-    def attack_modifiers(self):
+    def attack_modifiers(self) -> SerializedModifiers:
         return self._get_modifiers_by(ModifierType.ATTACK_MODIFIERS)
 
     @property
-    def defence_modifiers(self):
+    def defence_modifiers(self) -> SerializedModifiers:
         return self._get_modifiers_by(ModifierType.DEFENCE_MODIFIERS)
 
-    def _get_modifiers_by(self, modifier_type):
+    def _get_modifiers_by(self, modifier_type: ModifierType):
         return [modifier.modifier for modifier in self[modifier_type.value]]
 
-    def _get_modifier_from_db(self, fn_name):
+    def _get_modifier_from_db(self, fn_name: str) -> Modifier:
         return get_modifier_from(fn_name)
 
-    def _set_modifiers_from(self, input_modifiers):
+    def _set_modifiers_from(self, input_modifiers: RawModifiers):
         for fn_name, fn_category in self._get_raw_modifiers(input_modifiers):
             self.add_modifier(fn_name, ModifierType(f'_{fn_category}'))
 
-    def _get_raw_modifiers(self, input_modifiers):
+    def _get_raw_modifiers(self, input_modifiers: RawModifiers) -> Iterable[tuple[str, str]]:
         return chain.from_iterable(product(values, [key]) for key, values in input_modifiers.items())
 
-    def _find_proper_index(self, arr, target):
+    def _find_proper_index(self, arr: SerializedModifiers, target: Modifier):
         left = 0
         right = len(arr)
         while left < right:
@@ -72,10 +78,10 @@ class Modifiers:
                 left = m + 1
         return left
 
-    def __getitem__(self, value):
+    def __getitem__(self, value: str) -> Any:
         return getattr(self, value)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'Modifiers: \n attack_modifiers: {self._attack_modifiers} \n defence_modifiers: {self._defence_modifiers}'
 
 

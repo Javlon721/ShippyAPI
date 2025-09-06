@@ -1,10 +1,6 @@
-from ship.modifiers.ModifiersPriority import ModifiersPriority
-from ship.modifiers.register_modifier import register_modifier
+from ship.modifiers.utils import ModifiersPriority, ModifiersOption, register_modifier
 
-options = {
-    'items': [],
-    "priority": ModifiersPriority.BY_SHIP
-}
+options = ModifiersOption(priority=ModifiersPriority.BY_SHIP)
 
 register = register_modifier(options)
 
