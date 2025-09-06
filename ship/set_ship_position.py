@@ -1,4 +1,7 @@
-def input_validated_number(msg):
+from ship import Ship
+
+
+def input_validated_number(msg: str) -> float:
     """
     Возвращяет отвалидированное число с плаващей запятой (float) из ввода пользователя
     
@@ -12,7 +15,7 @@ def input_validated_number(msg):
             print(f'Enter valid number')
 
 
-def set_ship_position(ship):
+def set_ship_position(ship: Ship):
     """
     Функция, которая позволяет получить позицию корабля ((x, y), азимут) от пользователя через консоль,
     после чего применяет эти данные для экземпляря класса Ship
