@@ -7,6 +7,7 @@ from ship import Ship, set_ship_position
 def get_ship_by_name(ship_name: str) -> Ship:
     with open('jsons/ships.json', encoding='UTF-8') as file:
         data = json.load(file)
+        ship_name = ship_name.lower()
         ship_info = data.get(ship_name)
         if not ship_info:
             raise ShipNameNotFound(ship_name)

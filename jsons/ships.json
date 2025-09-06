@@ -1,5 +1,5 @@
 {
-  "Bismarck": {
+  "bismarck": {
     "damage": 7000,
     "nation": "Германия",
     "name": "Bismarck",
@@ -17,7 +17,7 @@
       ]
     }
   },
-  "Hipper": {
+  "hipper": {
     "name": "Hipper",
     "ship_type": "Крейсер",
     "nation": "Германия",
@@ -34,7 +34,7 @@
       ]
     }
   },
-  "Belfast": {
+  "belfast": {
     "name": "Belfast",
     "ship_type": "Крейсер",
     "nation": "Великобритания",
@@ -51,7 +51,7 @@
       ]
     }
   },
-  "Hood": {
+  "hood": {
     "name": "Hood",
     "ship_type": "Линкор",
     "nation": "Великобритания",
