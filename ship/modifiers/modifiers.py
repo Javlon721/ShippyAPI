@@ -33,9 +33,9 @@ class Modifiers:
 
         try:
             target = self._get_modifier_from_db(fn_name)
-            arr = self[modifier_type.value]
-            index = bin_search(0, len(arr), arr, target, Modifiers.compare_priority)
-            self[modifier_type.value].insert(index, target)
+            modifiers = self[modifier_type.value]
+            index = bin_search(0, len(modifiers), modifiers, target, Modifiers.compare_priority)
+            modifiers.insert(index, target)
         except ValueError as e:
             print(e)
         except Exception as e:
