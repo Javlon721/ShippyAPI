@@ -1,4 +1,4 @@
-from ship import Ship
+from engine.ship import Ship
 
 
 def create_attack_checker(ship1: Ship, ship2: Ship):

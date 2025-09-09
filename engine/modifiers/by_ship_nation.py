@@ -1,4 +1,4 @@
-from ship.modifiers.utils import ModifiersPriority, ModifiersOption, register_modifier
+from engine.modifiers.utils import ModifiersPriority, ModifiersOption, register_modifier
 
 options = ModifiersOption(priority=ModifiersPriority.BY_NATION)
 

@@ -1,4 +1,4 @@
-from ship import Ship
+from engine.ship import Ship
 
 
 def input_validated_number(msg: str) -> float:

@@ -2,8 +2,8 @@ from enum import Enum
 from itertools import chain, product
 from typing import Iterable, Any
 
-from ship.modifiers.serialized_modifiers import get_modifier_from
-from ship.modifiers.utils import Modifier, bin_search, ModifierFn
+from engine.modifiers.serialized_modifiers import get_modifier_from
+from engine.modifiers.utils import Modifier, bin_search, ModifierFn
 
 
 class ModifierType(Enum):

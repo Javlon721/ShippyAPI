@@ -1,7 +1,7 @@
-import ship.modifiers.by_ship as by_ship
-import ship.modifiers.by_ship_nation as by_ship_nation
-import ship.modifiers.by_ship_type as by_ship_type
-from ship.modifiers.utils import Modifier, ModifiersOption
+import engine.modifiers.by_ship as by_ship
+import engine.modifiers.by_ship_nation as by_ship_nation
+import engine.modifiers.by_ship_type as by_ship_type
+from engine.modifiers.utils import Modifier, ModifiersOption
 
 
 class _SerializeModifiers:

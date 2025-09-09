@@ -1,5 +1,5 @@
-from existing_ships import input_validated_ship
-from ship import calculate_moves
+from engine.calculate_moves import calculate_moves
+from engine.existing_ships import input_validated_ship
 
 ship_1 = input_validated_ship("Enter first ship name: ")
 ship_2 = input_validated_ship("Enter second ship name: ")

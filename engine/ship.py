@@ -1,8 +1,8 @@
 from itertools import chain
 
-from ship.modifiers.modifiers import Modifiers, RawModifiers
-from ship.modifiers.utils import ShipInterface
-from ship.util_classes import Coords, Azimuth
+from engine.modifiers.modifiers import RawModifiers, Modifiers
+from engine.modifiers.utils import ShipInterface
+from engine.util_classes import Coords, Azimuth
 
 
 def get_row_format() -> tuple[str, str]:
