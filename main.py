@@ -1,8 +1,10 @@
-import fastapi
+from typing import Any
 
-from engine.existing_ships import get_ship_by_name_api
+from fastapi import FastAPI
 
-app = fastapi.FastAPI()
+from api.db.connection import client
+
+app = FastAPI()
 
 
 @app.get("/")
@@ -10,6 +12,23 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/ships/{name}")
-async def read_item(name: str):
-    return await get_ship_by_name_api(name)
+@app.get("/db/healthz")
+async def test():
+    return client.ships.command("ping")
+
+
+def default_projections(**options: Any) -> dict[str, Any]:
+    print(options)
+
+    options.update({"_id": 0})
+    return options
+
+
+@app.get("/ships/{ship_id}")
+def get_ships(ship_id: str):
+    return client.ships.ships.find_one({"ship_id": ship_id}, default_projections())
+
+
+@app.get("/ships")
+def get_ships():
+    return list(client.ships.ships.find({}, default_projections()))
