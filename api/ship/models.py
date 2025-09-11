@@ -20,7 +20,7 @@ class ShipInfo(BaseModel):
     @staticmethod
     def identify_ship_by(ship_id: str):
         return {
-            "ship_id": ship_id,
+            "ship_id": ship_id.lower(),
         }
 
     @staticmethod
@@ -28,3 +28,21 @@ class ShipInfo(BaseModel):
         return {
             "ship_id": {"$in": [ship1.lower(), ship2.lower()]}
         }
+
+    @staticmethod
+    def get_battle_ship_by(ship_id: str):
+        return ShipInfo.identify_ship_by(ship_id)
+
+
+class BattleShipPosition(BaseModel):
+    x: float
+    y: float
+    azimuth: float
+
+
+class BattleShip(BaseModel):
+    ship_id: str
+    coords: BattleShipPosition
+
+    def same_as(self, other: "BattleShip"):
+        return self.ship_id == other.ship_id
