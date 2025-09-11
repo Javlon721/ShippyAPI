@@ -22,3 +22,9 @@ class ShipInfo(BaseModel):
         return {
             "ship_id": ship_id,
         }
+
+    @staticmethod
+    def get_battle_ships_by(ship1: str, ship2: str):
+        return {
+            "ship_id": {"$in": [ship1.lower(), ship2.lower()]}
+        }

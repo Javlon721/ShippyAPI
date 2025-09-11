@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Body
 
 from api.db.connection import db, COLLECTION_TYPE, get_collection
 from api.db.utils import default_projections
@@ -23,3 +23,8 @@ def get_ships(ship_id: str, collection: SHIPS_COLLECTION_DEPENDS):
 @ship_router.get("/")
 def get_ships(collection: SHIPS_COLLECTION_DEPENDS):
     return list(collection.find({}, default_projections()))
+
+
+@ship_router.post("/battle")
+def get_ships(ship1: Annotated[str, Body()], ship2: Annotated[str, Body()], collection: SHIPS_COLLECTION_DEPENDS):
+    return list(collection.find(ShipInfo.get_battle_ships_by(ship1, ship2), default_projections()))
