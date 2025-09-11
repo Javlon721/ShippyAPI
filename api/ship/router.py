@@ -1,8 +1,7 @@
-from typing import Any
-
 from fastapi import APIRouter
 
 from api.db.connection import client
+from api.db.utils import default_projections
 
 ship_router = APIRouter(prefix="/ship", tags=["ship"])
 
@@ -10,13 +9,6 @@ ship_router = APIRouter(prefix="/ship", tags=["ship"])
 @ship_router.get("/db/healthz")
 async def test():
     return client.ships.command("ping")
-
-
-def default_projections(**options: Any) -> dict[str, Any]:
-    print(options)
-
-    options.update({"_id": 0})
-    return options
 
 
 @ship_router.get("/{ship_id}")
