@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from api.db.connection import client
 from api.db.utils import default_projections
+from api.ship.models import ShipInfo
 
 ship_router = APIRouter(prefix="/ship", tags=["ship"])
 
@@ -13,7 +14,7 @@ async def test():
 
 @ship_router.get("/{ship_id}")
 def get_ships(ship_id: str):
-    return client.ships.ships.find_one({"ship_id": ship_id}, default_projections())
+    return client.ships.ships.find_one(ShipInfo.identify_ship_by(ship_id), default_projections())
 
 
 @ship_router.get("/")

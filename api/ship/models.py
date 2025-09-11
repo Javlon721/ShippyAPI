@@ -6,7 +6,7 @@ class ModifiersModel(BaseModel):
     defence_modifiers: list[str] | None = None
 
 
-class ShipCreateInfo(BaseModel):
+class ShipInfo(BaseModel):
     ship_id: str
     hp: int
     velocity: float
@@ -16,3 +16,9 @@ class ShipCreateInfo(BaseModel):
     name: str | None = None
     nation: str | None = None
     ship_type: str | None = None
+
+    @staticmethod
+    def identify_ship_by(ship_id: str):
+        return {
+            "ship_id": ship_id,
+        }
