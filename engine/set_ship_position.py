@@ -26,5 +26,9 @@ def set_ship_position(ship: Ship):
     x = input_validated_number(f"Enter {ship.name} 'x' coordinate: ")
     y = input_validated_number(f"Enter {ship.name} 'y' coordinate: ")
     azimuth = input_validated_number(f"Enter {ship.name} azimuth: ")
+    set_ship_position_by_values(ship, x, y, azimuth)
+
+
+def set_ship_position_by_values(ship: Ship, x: float, y: float, azimuth: float):
     ship.set_coords(x, y)
     ship.set_azimuth(azimuth)
