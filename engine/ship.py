@@ -51,9 +51,10 @@ class Ship(ShipInterface):
 
     def __init__(
             self,
-            name: str,
-            ship_type: str,
-            nation: str,
+            *,
+            name: str | None = None,
+            ship_type: str | None = None,
+            nation: str | None = None,
             damage: float,
             attack_range: float,
             hp: float,

@@ -3,9 +3,9 @@ from typing import Protocol, Any, Callable
 
 
 class ShipInterface(Protocol):
-    name: str
-    ship_type: str
-    nation: str
+    name: str | None = None
+    ship_type: str | None = None
+    nation: str | None = None
     damage: float
     attack_range: float
     hp: float
