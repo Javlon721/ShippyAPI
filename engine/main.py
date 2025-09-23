@@ -12,8 +12,8 @@ def start_battle(ship1: Ship, ship2: Ship):
     Если оба истина то корабли живы или если оба ложны то уничтожены
     """
     if not (ship1.is_alive() ^ ship2.is_alive()):
-        print('Ничья')
+        return('Ничья')
     elif ship1.is_alive():
-        print('Победа I')
+        return('Победа I')
     else:
-        print('Победа II')
+        return('Победа II')

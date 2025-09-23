@@ -98,6 +98,10 @@ class Ship(ShipInterface):
     def set_azimuth(self, azimuth: float):
         self.azimuth.set_azimuth(azimuth)
 
+    def set_pos(self, x: float, y: float, azimuth: float):
+        self.set_coords(x, y)
+        self.set_azimuth(azimuth)
+
     def get_distance_between(self, ship: "Ship") -> float:
         """
         Функция нахождения расстояние между двумя точками по их координатам, если заданы две точки:
