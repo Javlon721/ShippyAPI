@@ -2,6 +2,8 @@ from typing import Any
 
 from pydantic import model_validator
 
+from api.ship.models import BattleShipPosition
+from engine.ship import Ship
 
 class SetNonesMixin:
     @model_validator(mode='before')
@@ -11,3 +13,8 @@ class SetNonesMixin:
             if field not in data:
                 data.update({field: None})
         return data
+
+def create_ship(info: dict[str, Any], pos: BattleShipPosition) -> Ship:
+    battle_ship = Ship(**info)
+    battle_ship.set_pos(**pos.model_dump())
+    return battle_ship

@@ -35,9 +35,9 @@ class ShipInfo(BaseModel):
 
 
 class BattleShipPosition(BaseModel):
-    x: float
-    y: float
-    azimuth: float
+    x: float = 0.0
+    y: float = 0.0
+    azimuth: float = 0.0
 
 
 class BattleShip(BaseModel):
