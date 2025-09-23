@@ -19,11 +19,11 @@ async def test():
 
 
 @ship_router.get("/{ship_id}")
-def get_ships(ship_id: str, collection: SHIPS_COLLECTION_DEPENDS):
+def get_ships(ship_id: str, collection: SHIPS_COLLECTION_DEPENDS) -> ShipInfo:
     return collection.find_one(ShipInfo.identify_ship_by(ship_id), default_projections())
 
 
-@ship_router.get("/")
+@ship_router.get("/", response_model=list[ShipInfo])
 def get_ships(collection: SHIPS_COLLECTION_DEPENDS):
     return list(collection.find({}, default_projections()))
 
@@ -42,4 +42,4 @@ def get_ships(ship1: BattleShip, ship2: BattleShip, collection: SHIPS_COLLECTION
     battle_ship1 = create_ship(data[0], ship1.coords)
     battle_ship2 = create_ship(data[1], ship2.coords)
 
-    return  start_battle(battle_ship1, battle_ship2)
+    return start_battle(battle_ship1, battle_ship2)
