@@ -1,4 +1,5 @@
 from itertools import chain
+from typing import Any, Callable
 
 from engine.modifiers.modifiers import RawModifiers, Modifiers
 from engine.modifiers.utils import ShipInterface
@@ -32,6 +33,7 @@ def get_row_format() -> tuple[str, str]:
     template = "".join(["{:<" + str(cols[key]) + "}" for key in cols])
     return template, template.format(*cols.keys())
 
+type ResultPrinter = Callable[[str], None]
 
 class Ship(ShipInterface):
     """
@@ -71,6 +73,7 @@ class Ship(ShipInterface):
         self.coords = Coords(0.0, 0.0)
         self.azimuth = Azimuth(0.0)
         self.modifiers = Modifiers(modifiers)
+        self.result_printer: ResultPrinter = print
 
     @staticmethod
     def apply_modifiers(attacker: "Ship", attacked: "Ship"):
@@ -123,9 +126,12 @@ class Ship(ShipInterface):
             pass
         else:
             total_damage = Ship.apply_modifiers(attacker=self, attacked=ship)
-            print(
+            self.result_printer(
                 f'{self.name} hit {ship.name} with {total_damage} damage.')
             ship.receive_damage(total_damage)
+
+    def set_result_printer(self, new_printer: ResultPrinter):
+        self.result_printer = new_printer
 
     def is_alive(self) -> bool:
         return self.hp > 0
@@ -133,7 +139,7 @@ class Ship(ShipInterface):
     def receive_damage(self, damage: float):
         self.hp = max(0.0, self.hp - damage)
         if not self.is_alive():
-            print(f'{self.name} has been destroyed!')
+            self.result_printer(f'{self.name} has been destroyed!')
 
     def __str__(self) -> str:
         return Ship._formated_titles + "\n" + self._get_row
@@ -147,8 +153,8 @@ class Ship(ShipInterface):
                 (self.coords.x, self.coords.y)), str(self.azimuth.azimuth)
         )
 
-    @staticmethod
-    def print_ships(*ships):
+    
+    def print_ships(self, *ships):
         """
         Выводит список кораблей в отформатированном виде.
 
@@ -159,6 +165,6 @@ class Ship(ShipInterface):
             ships (*ships): Неограниченное количество объектов Ship, переданных как аргументы
         """
 
-        print(Ship._formated_titles)
+        self.result_printer(self._formated_titles)
         for ship in ships:
-            print(ship._get_row)
+            self.result_printer(ship._get_row)

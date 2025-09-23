@@ -1,12 +1,16 @@
+import asyncio
+import functools
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+from fastapi.responses import StreamingResponse
+
 
 from api.db.connection import db, COLLECTION_TYPE, get_collection
 from api.db.utils import default_projections
 from api.ship.models import ShipInfo, BattleShip
 from api.utils import create_ship
-from engine.main import start_battle
+from engine.main import EOF, start_battle
 
 
 ship_router = APIRouter(prefix="/ship", tags=["ship"])
@@ -28,9 +32,18 @@ def get_ships(collection: SHIPS_COLLECTION_DEPENDS):
     return list(collection.find({}, default_projections()))
 
 
+async def consumer(queue: asyncio.Queue[str]):
+    while True:
+        msg = await queue.get() 
+        if msg == EOF:
+            break
+        yield msg
+
+
 @ship_router.post("/battle")
-def get_ships(ship1: BattleShip, ship2: BattleShip, collection: SHIPS_COLLECTION_DEPENDS):
+async def get_battle_results(ship1: BattleShip, ship2: BattleShip, collection: SHIPS_COLLECTION_DEPENDS):
     exclude_from_db = default_projections(ship_id=0)
+    printer = asyncio.Queue()
 
     if ship1.same_as(ship2):
         fetched_data = collection.find_one(ShipInfo.get_battle_ship_by(ship1.ship_id), exclude_from_db)
@@ -42,4 +55,6 @@ def get_ships(ship1: BattleShip, ship2: BattleShip, collection: SHIPS_COLLECTION
     battle_ship1 = create_ship(data[0], ship1.coords)
     battle_ship2 = create_ship(data[1], ship2.coords)
 
-    return start_battle(battle_ship1, battle_ship2)
+    asyncio.create_task(start_battle(battle_ship1, battle_ship2, printer))
+
+    return StreamingResponse(consumer(printer), media_type="text/plain")
