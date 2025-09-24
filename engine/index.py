@@ -22,6 +22,5 @@ async def main():
     else:
         print('Победа II')
 
-
 if __name__ == "__main__":
     asyncio.run(main())
