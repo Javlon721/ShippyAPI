@@ -26,8 +26,8 @@ async def start_battle(ship1: Ship, ship2: Ship, printer: asyncio.Queue[str]):
     if not (ship1.is_alive() ^ ship2.is_alive()):
         print_producer('Ничья')
     elif ship1.is_alive():
-        print_producer('Победа I')
+        print_producer(f'Победа {ship1.name}')
     else:
-        print_producer('Победа II')
+        print_producer(f'Победа {ship2.name}')
 
     print_producer(EOF)
