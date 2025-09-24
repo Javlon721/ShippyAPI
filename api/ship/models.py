@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+from engine.ship import Ship
+
 
 class ModifiersModel(BaseModel):
     attack_modifiers: list[str] | None = None
@@ -46,3 +48,9 @@ class BattleShip(BaseModel):
 
     def same_as(self, other: "BattleShip"):
         return self.ship_id == other.ship_id
+
+
+def create_game_ship(info: ShipInfo, pos: BattleShipPosition) -> Ship:
+    battle_ship = Ship(**info.model_dump(exclude_none=True, exclude=["ship_id"]))
+    battle_ship.set_pos(**pos.model_dump())
+    return battle_ship
