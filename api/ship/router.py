@@ -7,7 +7,7 @@ from fastapi.responses import StreamingResponse
 from api.db.connection import db
 from api.ship.models import ShipInfo, BattleShip, create_game_ship
 from api.ship.repository import ShipsRepository
-from engine.main import EOF, start_battle
+from engine.main import EOF, create_battle, start_battle
 
 
 ship_router = APIRouter(prefix="/ship", tags=["ship"])
@@ -28,17 +28,16 @@ def get_ships():
     return ShipsRepository.find()
 
 
-async def consumer(queue: asyncio.Queue[str]):
+async def consumer(queue: asyncio.Queue[str], end_flag: str):
     while True:
         msg = await queue.get() 
-        if msg == EOF:
+        if msg == end_flag:
             break
         yield msg
 
 
 @ship_router.post("/battle")
 async def get_battle_results(ship1: BattleShip, ship2: BattleShip):
-    printer = asyncio.Queue()
 
     if ship1.same_as(ship2):
         ship = ShipsRepository.find_one_by(ship1.ship_id)
@@ -49,6 +48,8 @@ async def get_battle_results(ship1: BattleShip, ship2: BattleShip):
     battle_ship1 = create_game_ship(data[0], ship1.coords)
     battle_ship2 = create_game_ship(data[1], ship2.coords)
 
-    asyncio.create_task(start_battle(battle_ship1, battle_ship2, printer))
+    messages, start_game, end_flag = create_battle(battle_ship1, battle_ship2)
 
-    return StreamingResponse(consumer(printer), media_type="text/plain")
+    asyncio.create_task(start_game())
+
+    return StreamingResponse(consumer(messages, end_flag), media_type="text/plain")

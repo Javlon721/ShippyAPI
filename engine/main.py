@@ -1,5 +1,6 @@
 import asyncio
-from typing import Any, Callable
+from typing import Any, Callable, Coroutine
+
 from engine.calculate_moves import calculate_moves
 from engine.ship import Ship
 
@@ -7,15 +8,24 @@ from engine.ship import Ship
 EOF = '!game_end!'
 
 
-async def start_battle(ship1: Ship, ship2: Ship, printer: asyncio.Queue[str]):
+def create_battle(ship1: Ship, ship2: Ship) -> tuple[asyncio.Queue[str], Coroutine[None, None, None], str]:
+    messages = asyncio.Queue()
 
     def print_producer(msg: str="", end: str="\n"):
-        printer.put_nowait(msg)
-        printer.put_nowait(end)
+        messages.put_nowait(msg)
+        messages.put_nowait(end)
 
-    await calculate_moves(ship1, ship2, print_producer)
+    async def start_battle_wrapper():
+        await start_battle(ship1, ship2, print_producer)
 
-    print_producer()
+    return messages, start_battle_wrapper, EOF
+
+
+async def start_battle(ship1: Ship, ship2: Ship, printer: Callable[[str], Any]):
+
+    await calculate_moves(ship1, ship2, printer)
+
+    printer()
 
     """
     Использовал логическую эквивалентность (A <--> B), так как логическая эквивалентность истинна тогда и только тогда,
@@ -24,10 +34,10 @@ async def start_battle(ship1: Ship, ship2: Ship, printer: asyncio.Queue[str]):
     """
 
     if not (ship1.is_alive() ^ ship2.is_alive()):
-        print_producer('Ничья')
+        printer('Ничья')
     elif ship1.is_alive():
-        print_producer(f'Победа {ship1.name}')
+        printer(f'Победа {ship1.name}')
     else:
-        print_producer(f'Победа {ship2.name}')
+        printer(f'Победа {ship2.name}')
 
-    print_producer(EOF)
+    printer(EOF)
