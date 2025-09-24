@@ -1,11 +1,14 @@
-from pydantic import BaseModel
+from typing import Annotated
+from pydantic import BaseModel, Field
 
 from engine.ship import Ship
 
 
+type modifiers_type = Annotated[list[str], Field(default_factory=list)]
+
 class ModifiersModel(BaseModel):
-    attack_modifiers: list[str] | None = None
-    defence_modifiers: list[str] | None = None
+    attack_modifiers: modifiers_type
+    defence_modifiers: modifiers_type
 
 
 class ShipInfo(BaseModel):
@@ -14,7 +17,7 @@ class ShipInfo(BaseModel):
     velocity: float
     attack_range: float
     damage: int
-    modifiers: ModifiersModel | None = None
+    modifiers: ModifiersModel = Field(default_factory=ModifiersModel)
     name: str | None = None
     nation: str | None = None
     ship_type: str | None = None
