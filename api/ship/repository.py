@@ -1,6 +1,8 @@
-
-
 from typing import Any
+
+from fastapi import HTTPException, status
+import pymongo
+
 from api.db.connection import get_db
 from api.db.utils import default_projections
 from api.ship.models import ShipInfo
@@ -25,6 +27,20 @@ class _ShipsRepository:
   def find(self, queries: dict[str, Any] | None=None, **projections: dict[str, Any]) -> list[ShipInfo]:
     ship_infos = self.collection.find(queries, default_projections(**projections))
     return [ShipInfo.model_validate(ship_info) for ship_info in ship_infos]
+
+
+  def create(self, new_ship: ShipInfo) -> bool:
+    try:
+      data = new_ship.model_dump(exclude_none=True, exclude_defaults=True)
+      print(data)
+      action = self.collection.insert_one(data)
+      return { "ok": action.acknowledged }
+    except pymongo.errors.DuplicateKeyError as e:
+      print(e)
+      raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"{new_ship.ship_id} is already exists")
+    except Exception as e:
+      print(e)
+      raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="some error occured")
 
 
 ShipsRepository = _ShipsRepository()

@@ -28,6 +28,11 @@ def get_ships():
     return ShipsRepository.find()
 
 
+@ship_router.post("/")
+def get_ships(ship: ShipInfo):
+    return ShipsRepository.create(ship)
+
+
 async def message_receiver(queue: asyncio.Queue[str], end_flag: str):
     while True:
         msg = await queue.get() 
