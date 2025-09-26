@@ -1,6 +1,6 @@
 from typing import Any
 
-from pydantic import model_validator
+from pydantic import BaseModel, model_validator
 
 
 class SetNonesMixin:
@@ -11,3 +11,6 @@ class SetNonesMixin:
             if field not in data:
                 data.update({field: None})
         return data
+
+class OKResponce(BaseModel):
+    ok: bool

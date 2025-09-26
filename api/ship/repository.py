@@ -6,6 +6,7 @@ import pymongo
 from api.db.connection import get_db
 from api.db.utils import default_projections
 from api.ship.models import ShipInfo
+from api.utils import OKResponce
 
 
 class _ShipsRepository:
@@ -29,12 +30,11 @@ class _ShipsRepository:
     return [ShipInfo.model_validate(ship_info) for ship_info in ship_infos]
 
 
-  def create(self, new_ship: ShipInfo) -> bool:
+  def create(self, new_ship: ShipInfo) -> OKResponce:
     try:
       data = new_ship.model_dump(exclude_none=True, exclude_defaults=True)
-      print(data)
       action = self.collection.insert_one(data)
-      return { "ok": action.acknowledged }
+      return OKResponce(action.acknowledged)
     except pymongo.errors.DuplicateKeyError as e:
       print(e)
       raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"{new_ship.ship_id} is already exists")

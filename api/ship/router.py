@@ -7,6 +7,7 @@ from fastapi.responses import StreamingResponse
 from api.db.connection import db
 from api.ship.models import ShipInfo, BattleShip, create_game_ship
 from api.ship.repository import ShipsRepository
+from api.utils import OKResponce
 from engine.main import create_battle
 
 
@@ -29,7 +30,7 @@ def get_ships():
 
 
 @ship_router.post("/")
-def get_ships(ship: ShipInfo):
+def get_ships(ship: ShipInfo) -> OKResponce:
     return ShipsRepository.create(ship)
 
 
