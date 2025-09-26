@@ -7,7 +7,7 @@ from fastapi.responses import StreamingResponse
 from api.db.connection import db
 from api.ship.models import ShipInfo, BattleShip, create_game_ship
 from api.ship.repository import ShipsRepository
-from api.utils import OKResponce
+from api.utils import OKResponce, message_receiver
 from engine.main import create_battle
 
 
@@ -37,14 +37,6 @@ def get_ships(ship: ShipInfo) -> OKResponce:
 @ship_router.delete("/{ship_id}")
 def get_ships(ship_id: str) -> OKResponce:
     return ShipsRepository.delete(ship_id)
-
-
-async def message_receiver(queue: asyncio.Queue[str], end_flag: str):
-    while True:
-        msg = await queue.get() 
-        if msg == end_flag:
-            break
-        yield msg
 
 
 @ship_router.post("/battle")

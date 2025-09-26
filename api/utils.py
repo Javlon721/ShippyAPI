@@ -1,3 +1,4 @@
+import asyncio
 from typing import Any
 
 from pydantic import BaseModel, model_validator
@@ -14,3 +15,11 @@ class SetNonesMixin:
 
 class OKResponce(BaseModel):
     ok: bool
+
+
+async def message_receiver(queue: asyncio.Queue[str], end_flag: str):
+    while True:
+        msg = await queue.get() 
+        if msg == end_flag:
+            break
+        yield msg
