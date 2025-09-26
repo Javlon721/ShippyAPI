@@ -40,7 +40,7 @@ def get_ships(ship_id: str) -> OKResponce:
 
 
 @ship_router.post("/battle")
-async def get_battle_results(ship1: BattleShip, ship2: BattleShip):
+async def get_battle_results(ship1: BattleShip, ship2: BattleShip) -> StreamingResponse:
 
     if ship1.same_as(ship2):
         ship = ShipsRepository.find_one_by(ship1.ship_id)
