@@ -17,17 +17,29 @@ class _ShipsRepository:
 
 
   def find_one_by(self, ship_id: str) -> ShipInfo:
-    ship_info = self.collection.find_one(ShipInfo.get_battle_ship_by(ship_id), default_projections())
-    return ShipInfo.model_validate(ship_info)
+    try:
+      ship_info = self.collection.find_one(ShipInfo.get_battle_ship_by(ship_id), default_projections())
+      return ShipInfo.model_validate(ship_info)
+    except Exception as e:
+      print(e)
+      raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="something went wrong")
 
 
   def find_by(self, *ships_id: str) -> list[ShipInfo]:
-    return self.find(ShipInfo.get_battle_ships_by(*ships_id))
+    try:
+      return self.find(ShipInfo.get_battle_ships_by(*ships_id))
+    except Exception as e:
+      print(e)
+      raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="something went wrong")
 
 
   def find(self, queries: dict[str, Any] | None=None, **projections: dict[str, Any]) -> list[ShipInfo]:
-    ship_infos = self.collection.find(queries, default_projections(**projections))
-    return [ShipInfo.model_validate(ship_info) for ship_info in ship_infos]
+    try:
+      ship_infos = self.collection.find(queries, default_projections(**projections))
+      return [ShipInfo.model_validate(ship_info) for ship_info in ship_infos]
+    except Exception as e:
+      print(e)
+      raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="something went wrong")
 
 
   def create(self, new_ship: ShipInfo) -> OKResponce:
