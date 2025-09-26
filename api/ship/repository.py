@@ -55,4 +55,20 @@ class _ShipsRepository:
       raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="some error occured")
 
 
+  def delete(self, ship_id: str) -> OKResponce:
+    try:
+      action = self.collection.delete_one(ShipInfo.get_battle_ship_by(ship_id))
+      
+      if not action.deleted_count:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"{ship_id} does not exist")
+      
+      return OKResponce(ok=True)
+    except HTTPException:
+      raise
+    except Exception as e:
+      print(e)
+      raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="some error occured")
+
+
+
 ShipsRepository = _ShipsRepository()

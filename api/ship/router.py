@@ -34,6 +34,11 @@ def get_ships(ship: ShipInfo) -> OKResponce:
     return ShipsRepository.create(ship)
 
 
+@ship_router.delete("/{ship_id}")
+def get_ships(ship_id: str) -> OKResponce:
+    return ShipsRepository.delete(ship_id)
+
+
 async def message_receiver(queue: asyncio.Queue[str], end_flag: str):
     while True:
         msg = await queue.get() 
