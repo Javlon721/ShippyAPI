@@ -52,9 +52,8 @@ uvicorn main:app --reload
 - Main endpoints to play are
     - **GET**: [http://127.0.0.1:8000/ship/](http://127.0.0.1:8000/ship/) - to see all available ships for battle
     - **POST**: [http://127.0.0.1:8000/ship/battle/](http://127.0.0.1:8000/ship/battle/) - to start battle
-        
-        ```json
         Here is the sample body data that you should send:
+        ```json
         {
             "ship1": {
                 "ship_id": "bismarck",
@@ -77,7 +76,7 @@ uvicorn main:app --reload
 - For create new ships with available options there is html in templates folder
     - Run in terminal
     
-    ```json
+    ```
     python3 -m http.server 5001 -d templates/create
     ```
     
