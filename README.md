@@ -51,7 +51,7 @@ uvicorn main:app --reload
 - To see capabilities of this simple api you can use docs [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 - Main endpoints to play are
     - **GET**: [http://127.0.0.1:8000/ship/](http://127.0.0.1:8000/ship/) - to see all available ships for battle
-    - **POST**: [http://127.0.0.1:8000/ship/battle/](http://127.0.0.1:8000/ship/battle/) - to start battle
+    - **POST**: [http://127.0.0.1:8000/ship/battle/](http://127.0.0.1:8000/ship/battle/) - to start battle.
         Here is the sample body data that you should send:
         ```json
         {
