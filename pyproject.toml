@@ -5,7 +5,6 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi[standard]>=0.116.1",
-    "passlib[bcrypt]>=1.7.4",
     "psycopg[binary]>=3.2.10",
     "pydantic-settings>=2.10.1",
     "pymongo>=4.14.1",
