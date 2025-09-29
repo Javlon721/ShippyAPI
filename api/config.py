@@ -16,7 +16,7 @@ class DBConfig:
 
     @property
     def uri(self) -> str:
-        return f"mongodb://{self.user}:{self.password}@{self.host}:{self.port}/{self.dbname}"
+        return f"mongodb://{self.user}:{self.password}@{self.host}:{self.port}/{self.dbname}?authSource=admin"
 
 
 class _Settings(BaseSettings):
