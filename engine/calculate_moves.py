@@ -2,20 +2,16 @@ from typing import Callable
 from engine.ship import Ship
 
 
-def is_one_approaching(last: float, current: float, is_hitted: dict[str, bool]):
-    """Коооостылььь"""
-    is_hitted['value'] = not is_hitted['value']
-    return current <= last and is_hitted['value']
+def is_one_approaching(last: float, current: float):
+    return current < last
 
 def create_attack_checker(ship1: Ship, ship2: Ship):
     max_attack_distance = max(ship1.attack_range, ship2.attack_range)
-    first_distance = ship1.get_distance_between(ship2)
-
-    is_hitted = { "value": False }
+    first_distance = ship1.get_distance_between(ship2) + 0.000000000001
 
     def can_any_attack() -> bool:
         current_distance = ship1.get_distance_between(ship2)
-        return current_distance <= max_attack_distance or is_one_approaching(first_distance, current_distance, is_hitted)
+        return current_distance <= max_attack_distance or is_one_approaching(first_distance, current_distance)
 
     return can_any_attack
 
